@@ -20,9 +20,7 @@ defmodule TrelixiaWeb.Endpoint do
   # when deploying your static files in production.
   plug Plug.Static,
     at: "/",
-    from: :trelixia,
-    gzip: false,
-    only: ~w(css fonts images js favicon.ico robots.txt)
+    from: :trelixia
 
   # Code reloading can be explicitly enabled under the
   # :code_reloader configuration of your endpoint.
@@ -43,5 +41,11 @@ defmodule TrelixiaWeb.Endpoint do
   plug Plug.MethodOverride
   plug Plug.Head
   plug Plug.Session, @session_options
+
+  plug Corsica,
+    origins: "http://localhost:3000",
+    allow_credentials: true,
+    allow_headers: ["content-type"]
+
   plug TrelixiaWeb.Router
 end

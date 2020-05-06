@@ -20,7 +20,7 @@ defmodule Trelixia.MixProject do
   def application do
     [
       mod: {Trelixia.Application, []},
-      extra_applications: [:logger, :runtime_tools]
+      extra_applications: [:logger, :runtime_tools, :corsica]
     ]
   end
 
@@ -45,7 +45,8 @@ defmodule Trelixia.MixProject do
       {:plug_cowboy, "~> 2.0"},
       {:absinthe, "~> 1.4"},
       {:absinthe_plug, "~> 1.4"},
-      {:absinthe_phoenix, "~> 1.4"}
+      {:absinthe_phoenix, "~> 1.4"},
+      {:corsica, "~> 1.0"}
     ]
   end
 

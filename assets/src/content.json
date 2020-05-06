@@ -1,0 +1,12 @@
+{
+  "menu": [
+    {
+      "text": "See Upcoming Games",
+      "link": "/games"
+    },
+    {
+      "text": "Create New Game",
+      "link": "/createGame"
+    }
+  ]
+}
