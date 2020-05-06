@@ -6,7 +6,7 @@ defmodule Trelixia.Trivia do
   import Ecto.Query, warn: false
   alias Trelixia.Repo
 
-  alias Trelixia.Trivia.Game
+  alias Trelixia.Trivia.{Game, Question, Favorite}
 
   @doc """
   Returns the list of games.
@@ -19,6 +19,29 @@ defmodule Trelixia.Trivia do
   """
   def list_games do
     Repo.all(Game)
+  end
+
+  def fetch_games_by_category(category) do
+    query =
+      from(
+        g in Game,
+        where: g.category == ^category,
+        order_by: [desc: g.inserted_at]
+      )
+
+    Repo.all(query)
+  end
+
+  def fetch_games_by_user_favorite(user_id) do
+    query =
+      from(
+        g in Game,
+        join: f in assoc(g, :favorites),
+        where: f.user_id == ^user_id,
+        order_by: [desc: g.inserted_at]
+      )
+
+    Repo.all(query)
   end
 
   @doc """
@@ -101,8 +124,6 @@ defmodule Trelixia.Trivia do
   def change_game(%Game{} = game) do
     Game.changeset(game, %{})
   end
-
-  alias Trelixia.Trivia.Question
 
   @doc """
   Returns the list of questions.
@@ -197,8 +218,6 @@ defmodule Trelixia.Trivia do
   def change_question(%Question{} = question) do
     Question.changeset(question, %{})
   end
-
-  alias Trelixia.Trivia.Favorite
 
   @doc """
   Returns the list of favorites.

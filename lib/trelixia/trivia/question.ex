@@ -2,6 +2,9 @@ defmodule Trelixia.Trivia.Question do
   use Ecto.Schema
   import Ecto.Changeset
 
+  @all_fields ~w(question_text answer topic type time_allotment compare_threshold game_id)a
+  @required_fields ~w(question_text answer time_allotment)a
+
   schema "questions" do
     field :answer, :string
     field :compare_threshold, :float
@@ -9,7 +12,8 @@ defmodule Trelixia.Trivia.Question do
     field :time_allotment, :integer
     field :topic, :string
     field :type, :string
-    field :game_id, :id
+
+    belongs_to :game, Trelixia.Trivia.Game
 
     timestamps()
   end
@@ -17,7 +21,7 @@ defmodule Trelixia.Trivia.Question do
   @doc false
   def changeset(question, attrs) do
     question
-    |> cast(attrs, [:question_text, :answer, :topic, :type, :time_allotment, :compare_threshold])
-    |> validate_required([:question_text, :answer, :topic, :type, :time_allotment, :compare_threshold])
+    |> cast(attrs, @all_fields)
+    |> validate_required(@required_fields)
   end
 end

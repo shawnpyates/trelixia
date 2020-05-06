@@ -24,6 +24,8 @@ defmodule TrelixiaWeb.Router do
 
     forward "/graphql", Absinthe.Plug, schema: TrelixiaWeb.Schema
 
-    forward "/graphiql", Absinthe.Plug.GraphiQL, schema: TrelixiaWeb.Schema, interface: :playground
+    forward "/graphiql", Absinthe.Plug.GraphiQL,
+      schema: TrelixiaWeb.Schema,
+      interface: :playground
   end
 end

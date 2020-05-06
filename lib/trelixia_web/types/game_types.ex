@@ -1,6 +1,6 @@
 defmodule TrelixiaWeb.Types.GameTypes do
   use Absinthe.Schema.Notation
-  import_types Absinthe.Type.Custom
+  import_types(Absinthe.Type.Custom)
 
   @desc "Game fields that can be queried"
   object :game do

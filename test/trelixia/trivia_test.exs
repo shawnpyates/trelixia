@@ -6,9 +6,30 @@ defmodule Trelixia.TriviaTest do
   describe "games" do
     alias Trelixia.Trivia.Game
 
-    @valid_attrs %{category: "some category", current_question_expiry: "2010-04-17T14:00:00Z", current_question_id: 42, is_automated: true, max_players: 42, scheduled_for: "2010-04-17T14:00:00Z"}
-    @update_attrs %{category: "some updated category", current_question_expiry: "2011-05-18T15:01:01Z", current_question_id: 43, is_automated: false, max_players: 43, scheduled_for: "2011-05-18T15:01:01Z"}
-    @invalid_attrs %{category: nil, current_question_expiry: nil, current_question_id: nil, is_automated: nil, max_players: nil, scheduled_for: nil}
+    @valid_attrs %{
+      category: "some category",
+      current_question_expiry: "2010-04-17T14:00:00Z",
+      current_question_id: 42,
+      is_automated: true,
+      max_players: 42,
+      scheduled_for: "2010-04-17T14:00:00Z"
+    }
+    @update_attrs %{
+      category: "some updated category",
+      current_question_expiry: "2011-05-18T15:01:01Z",
+      current_question_id: 43,
+      is_automated: false,
+      max_players: 43,
+      scheduled_for: "2011-05-18T15:01:01Z"
+    }
+    @invalid_attrs %{
+      category: nil,
+      current_question_expiry: nil,
+      current_question_id: nil,
+      is_automated: nil,
+      max_players: nil,
+      scheduled_for: nil
+    }
 
     def game_fixture(attrs \\ %{}) do
       {:ok, game} =
@@ -32,7 +53,10 @@ defmodule Trelixia.TriviaTest do
     test "create_game/1 with valid data creates a game" do
       assert {:ok, %Game{} = game} = Trivia.create_game(@valid_attrs)
       assert game.category == "some category"
-      assert game.current_question_expiry == DateTime.from_naive!(~N[2010-04-17T14:00:00Z], "Etc/UTC")
+
+      assert game.current_question_expiry ==
+               DateTime.from_naive!(~N[2010-04-17T14:00:00Z], "Etc/UTC")
+
       assert game.current_question_id == 42
       assert game.is_automated == true
       assert game.max_players == 42
@@ -47,7 +71,10 @@ defmodule Trelixia.TriviaTest do
       game = game_fixture()
       assert {:ok, %Game{} = game} = Trivia.update_game(game, @update_attrs)
       assert game.category == "some updated category"
-      assert game.current_question_expiry == DateTime.from_naive!(~N[2011-05-18T15:01:01Z], "Etc/UTC")
+
+      assert game.current_question_expiry ==
+               DateTime.from_naive!(~N[2011-05-18T15:01:01Z], "Etc/UTC")
+
       assert game.current_question_id == 43
       assert game.is_automated == false
       assert game.max_players == 43
@@ -75,9 +102,30 @@ defmodule Trelixia.TriviaTest do
   describe "questions" do
     alias Trelixia.Trivia.Question
 
-    @valid_attrs %{answer: "some answer", compare_threshold: 120.5, question_text: "some question_text", time_allotment: 42, topic: "some topic", type: "some type"}
-    @update_attrs %{answer: "some updated answer", compare_threshold: 456.7, question_text: "some updated question_text", time_allotment: 43, topic: "some updated topic", type: "some updated type"}
-    @invalid_attrs %{answer: nil, compare_threshold: nil, question_text: nil, time_allotment: nil, topic: nil, type: nil}
+    @valid_attrs %{
+      answer: "some answer",
+      compare_threshold: 120.5,
+      question_text: "some question_text",
+      time_allotment: 42,
+      topic: "some topic",
+      type: "some type"
+    }
+    @update_attrs %{
+      answer: "some updated answer",
+      compare_threshold: 456.7,
+      question_text: "some updated question_text",
+      time_allotment: 43,
+      topic: "some updated topic",
+      type: "some updated type"
+    }
+    @invalid_attrs %{
+      answer: nil,
+      compare_threshold: nil,
+      question_text: nil,
+      time_allotment: nil,
+      topic: nil,
+      type: nil
+    }
 
     def question_fixture(attrs \\ %{}) do
       {:ok, question} =

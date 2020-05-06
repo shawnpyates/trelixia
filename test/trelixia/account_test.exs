@@ -6,9 +6,33 @@ defmodule Trelixia.AccountTest do
   describe "users" do
     alias Trelixia.Account.User
 
-    @valid_attrs %{current_game_id: 42, current_score: 42, email: "some email", is_registered: true, provider: "some provider", token: "some token", username: "some username"}
-    @update_attrs %{current_game_id: 43, current_score: 43, email: "some updated email", is_registered: false, provider: "some updated provider", token: "some updated token", username: "some updated username"}
-    @invalid_attrs %{current_game_id: nil, current_score: nil, email: nil, is_registered: nil, provider: nil, token: nil, username: nil}
+    @valid_attrs %{
+      current_game_id: 42,
+      current_score: 42,
+      email: "some email",
+      is_registered: true,
+      provider: "some provider",
+      token: "some token",
+      username: "some username"
+    }
+    @update_attrs %{
+      current_game_id: 43,
+      current_score: 43,
+      email: "some updated email",
+      is_registered: false,
+      provider: "some updated provider",
+      token: "some updated token",
+      username: "some updated username"
+    }
+    @invalid_attrs %{
+      current_game_id: nil,
+      current_score: nil,
+      email: nil,
+      is_registered: nil,
+      provider: nil,
+      token: nil,
+      username: nil
+    }
 
     def user_fixture(attrs \\ %{}) do
       {:ok, user} =

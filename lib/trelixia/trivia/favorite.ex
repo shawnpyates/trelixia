@@ -2,9 +2,11 @@ defmodule Trelixia.Trivia.Favorite do
   use Ecto.Schema
   import Ecto.Changeset
 
+  @all_fields ~w(user_id game_id)a
+
   schema "favorites" do
-    field :user_id, :id
-    field :game_id, :id
+    belongs_to :user, Trelixia.Account.User
+    belongs_to :game, Trelixia.Trivia.Game
 
     timestamps()
   end
@@ -12,7 +14,7 @@ defmodule Trelixia.Trivia.Favorite do
   @doc false
   def changeset(favorite, attrs) do
     favorite
-    |> cast(attrs, [])
-    |> validate_required([])
+    |> cast(attrs, @all_fields)
+    |> validate_required(@all_fields)
   end
 end

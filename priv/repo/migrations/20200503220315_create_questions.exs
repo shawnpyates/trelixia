@@ -13,6 +13,5 @@ defmodule Trelixia.Repo.Migrations.CreateQuestions do
 
       timestamps()
     end
-
   end
 end
