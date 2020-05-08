@@ -1,4 +1,6 @@
-import { Drawer, List, ListItem, ListItemText } from '@material-ui/core';
+import {
+  Drawer, List, ListItem, ListItemText,
+} from '@material-ui/core';
 import styled from 'styled-components';
 
 export const StyledDrawer = styled(Drawer)`
