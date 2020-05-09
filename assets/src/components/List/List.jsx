@@ -21,7 +21,7 @@ import {
   LoadingIndicator,
 } from './styledComponents';
 
-const replaceDayString = (date) => {
+const replaceDateString = (date) => {
   if (dayjs().isSame(dayjs(date), 'day')) {
     return 'Today';
   }
@@ -32,9 +32,9 @@ const replaceDayString = (date) => {
 };
 
 const formatDate = (date) => {
-  const dayString = replaceDayString(date) || dayjs(date).format('MMM D, YYYY');
+  const dateString = replaceDateString(date) || dayjs(date).format('MMM D, YYYY');
   const timeString = dayjs(date).format('h:mm a');
-  return `${dayString} at ${timeString}`;
+  return `${dateString} at ${timeString}`;
 };
 // const ENTER_KEY = 13;
 
