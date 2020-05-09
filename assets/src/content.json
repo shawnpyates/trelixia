@@ -8,5 +8,24 @@
       "text": "Create New Game",
       "link": "/createGame"
     }
+  ],
+  "list": [
+    {
+      "header": "Name",
+      "key": "name"
+    },
+    {
+      "header": "Category",
+      "key": "category"
+    },
+    {
+      "header": "Scheduled For",
+      "key": "scheduledFor",
+      "isTimestamp": true
+    },
+    {
+      "header": "Maximum Players Allowed",
+      "key": "maxPlayers"
+    }
   ]
 }

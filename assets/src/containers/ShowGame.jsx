@@ -25,7 +25,7 @@ function ShowGame() {
   if (error) return <p>Error :(</p>;
 
   if (data) {
-    console.log('Data::: ', data);
+    console.log('Data: ', data);
   }
   return (
     <GameContainer>{data.game.name}</GameContainer>

@@ -17,6 +17,7 @@ export const CREATE_GAME = gql`
     $isAutomated: Boolean!,
     $maxPlayers: Int,
     $scheduledFor: String,
+    $defaultCompareThreshold: Float,
     $ownerId: ID!
   ) {
     createGame(
@@ -27,6 +28,7 @@ export const CREATE_GAME = gql`
       isAutomated: $isAutomated,
       maxPlayers: $maxPlayers,
       scheduledFor: $scheduledFor,
+      defaultCompareThreshold: $defaultCompareThreshold,
       ownerId: $ownerId
     ) {
       id
@@ -95,6 +97,7 @@ export const EDIT_GAME = gql`
     $currentQuestionExpiry: String,
     $isAutomated: Boolean,
     $maxPlayers: Int,
+    $defaultCompareThreshold: Float,
   ) {
     editGame(
       id: $id,
@@ -104,6 +107,7 @@ export const EDIT_GAME = gql`
       currentQuestionExpiry: $currentQuestionExpiry,
       isAutomated: $isAutomated,
       maxPlayers: $maxPlayers,
+      defaultCompareThreshold: $defaultCompareThreshold,
       ownerId: $ownerId
     ) {
       id

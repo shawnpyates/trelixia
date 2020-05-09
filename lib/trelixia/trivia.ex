@@ -18,7 +18,15 @@ defmodule Trelixia.Trivia do
 
   """
   def list_games do
-    Repo.all(Game)
+    now = DateTime.utc_now()
+    query =
+      from(
+        g in Game,
+        where: g.scheduled_for > ^now,
+        order_by: g.scheduled_for,
+        preload: [:users]
+      )
+    Repo.all(query)
   end
 
   def fetch_games_by_category(category) do

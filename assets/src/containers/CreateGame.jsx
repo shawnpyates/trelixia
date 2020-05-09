@@ -4,7 +4,8 @@ import { useMutation } from '@apollo/react-hooks';
 import { Formik, Form, Field } from 'formik';
 import { Select, Switch, TextField } from 'formik-material-ui';
 import { ThemeProvider } from '@material-ui/styles';
-// import { DateTimePicker } from 'formik-material-ui-pickers';
+import { useHistory } from 'react-router-dom';
+
 import {
   Button,
   FormControlLabel,
@@ -38,13 +39,21 @@ const theme = createMuiTheme({
     },
     MuiFormControl: {
       root: {
-        display: 'block'
+        display: 'block',
       },
     },
     MuiInputBase: {
+      root: {
+        width: '100%',
+        padding: '5px',
+      },
       input: {
         cursor: 'pointer',
         color: '#FFF',
+        '&:-webkit-autofill': {
+          WebkitBoxShadow: '0 0 0 1000px #36384F inset',
+          WebkitTextFillColor: '#FFF',
+        },
       },
     },
     MuiFormLabel: {
@@ -81,7 +90,7 @@ const gameCategories = [
   'Science',
   'Music',
   'Film',
-  'Literature'
+  'Literature',
 ];
 
 const StyledField = styled(Field)`
@@ -117,7 +126,7 @@ const initialValues = {
   maxPlayers: 50,
   shouldScheduleTime: false,
   scheduledFor: null,
-  // ownerId: 6,
+  ownerId: 6,
 };
 
 const validate = (values) => {
@@ -128,10 +137,41 @@ const validate = (values) => {
     errors.category = 'Category Required';
   }
   return errors;
-}
+};
 
 function CreateGame() {
   const [createGame, { data }] = useMutation(CREATE_GAME);
+  const history = useHistory();
+
+  if (data) {
+    history.push(`/games/${data.createGame.id}`);
+  }
+
+  const handleSubmit = (
+    {
+      name,
+      category,
+      isAutomated,
+      defaultCompareThreshold,
+      maxPlayers,
+      scheduledFor,
+      ownerId,
+    },
+    { setSubmitting },
+  ) => {
+    setSubmitting(false);
+    createGame({
+      variables: {
+        name,
+        category,
+        isAutomated,
+        defaultCompareThreshold,
+        maxPlayers,
+        scheduledFor,
+        ownerId,
+      },
+    });
+  };
 
   return (
     <GameContainer>
@@ -141,17 +181,12 @@ function CreateGame() {
           <Formik
             initialValues={initialValues}
             validate={validate}
-            onSubmit={(values, { setSubmitting }) => {
-              console.log('submitting')
-              setTimeout(() => {
-                setSubmitting(false);
-                alert(JSON.stringify(values, null, 2));
-              }, 500);
-            }}
+            onSubmit={handleSubmit}
           >
-            {({ submitForm, isSubmitting, setFieldValue, values }) => {
-              console.log('values: ', values);
-              return (<Form>
+            {({
+              submitForm, isSubmitting, setFieldValue, values,
+            }) => (
+              <Form>
                 <FieldContainer>
                   <StyledField
                     name="name"
@@ -182,23 +217,25 @@ function CreateGame() {
                     control={<Field component={Switch} name="isAutomated" type="checkbox" />}
                     label="Run the game in Automated Mode"
                   />
-                {values.isAutomated
+                  {values.isAutomated
                 && (
                   <>
-                  <Typography id="slider" gutterBottom>
-                    Default Required Match Score: {values.defaultCompareThreshold.toFixed(2)}
-                  </Typography>
-                  <Slider
-                    name="defaultCompareThreshold"
-                    step={0.01}
-                    defaultValue={0.90}
-                    aria-labelledby="slider"
-                    min={0.50}
-                    max={1.0}
-                    onChange={(_event, value) => {
-                      setFieldValue('defaultCompareThreshold', value);
-                    }}
-                  />
+                    <Typography id="slider" gutterBottom>
+                      Default Required Match Score:
+                      {' '}
+                      {values.defaultCompareThreshold.toFixed(2)}
+                    </Typography>
+                    <Slider
+                      name="defaultCompareThreshold"
+                      step={0.01}
+                      defaultValue={0.90}
+                      aria-labelledby="slider"
+                      min={0.50}
+                      max={1.0}
+                      onChange={(_event, value) => {
+                        setFieldValue('defaultCompareThreshold', value);
+                      }}
+                    />
                   </>
                 )}
                 </FieldContainer>
@@ -211,20 +248,22 @@ function CreateGame() {
                 {values.shouldSetMaxPlayers
                 && (
                   <>
-                  <Typography id="slider" gutterBottom>
-                    Maximum Number of Players: {values.maxPlayers}
-                  </Typography>
-                  <Slider
-                    name="maxPlayers"
-                    step={1}
-                    defaultValue={50}
-                    aria-labelledby="slider"
-                    min={1}
-                    max={100}
-                    onChange={(_event, value) => {
-                      setFieldValue('maxPlayers', value);
-                    }}
-                  />
+                    <Typography id="slider" gutterBottom>
+                      Maximum Number of Players:
+                      {' '}
+                      {values.maxPlayers}
+                    </Typography>
+                    <Slider
+                      name="maxPlayers"
+                      step={1}
+                      defaultValue={50}
+                      aria-labelledby="slider"
+                      min={1}
+                      max={100}
+                      onChange={(_event, value) => {
+                        setFieldValue('maxPlayers', value);
+                      }}
+                    />
                   </>
                 )}
                 <FieldContainer>
@@ -235,10 +274,10 @@ function CreateGame() {
                   {values.shouldScheduleTime
                   && (
                     <DateTimePicker
-                      label="Schedule Game For"
+                      label="Set Time"
                       value={values.scheduledFor}
-                      onChange={(_event, value) => {
-                        setFieldValue('scheduledFor', value);
+                      onChange={(ev) => {
+                        setFieldValue('scheduledFor', ev);
                       }}
                     />
                   )}
@@ -251,8 +290,8 @@ function CreateGame() {
                 >
                   Submit
                 </StyledButton>
-              </Form>);
-            }}
+              </Form>
+            )}
           </Formik>
         </MuiPickersUtilsProvider>
       </ThemeProvider>

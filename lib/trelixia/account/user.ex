@@ -6,13 +6,14 @@ defmodule Trelixia.Account.User do
   @required_fields ~w(username is_registered)a
 
   schema "users" do
-    field :current_game_id, :id
     field :current_score, :integer
     field :email, :string
     field :is_registered, :boolean, default: false
     field :provider, :string
     field :token, :string
     field :username, :string
+
+    belongs_to :game, Trelixia.Trivia.Game, foreign_key: :current_game_id
 
     has_many :games, Trelixia.Trivia.Game, foreign_key: :owner_id
     has_many :favorites, Trelixia.Trivia.Favorite

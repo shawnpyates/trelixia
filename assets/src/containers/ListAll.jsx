@@ -4,21 +4,10 @@ import { useQuery } from '@apollo/react-hooks';
 import { useHistory } from 'react-router-dom';
 
 import { GET_ALL_GAMES } from '../api/queries';
-
-const ListContainer = styled.div`
-  height: 500px;
-  width: 500px;
-
-  position: absolute;
-  top: 100px;
-  left: 250px;
-  @media only screen and (max-width: 1040px) {
-    left: 10%;
-  }
-`;
+import { list as listConfig } from '../content.json';
+import List from '../components/List/List';
 
 function ListAll() {
-  const history = useHistory();
   const { loading, error, data } = useQuery(GET_ALL_GAMES);
 
   if (loading) return <p>Loading...</p>;
@@ -28,20 +17,14 @@ function ListAll() {
     console.log('Data: ', data);
   }
   return (
-    <ListContainer>
-      <ul>
-        {data.games.map((game) => (
-          <li
-            key={game.id}
-            onClick={() => {
-              history.push(`/games/${game.id}`);
-            }}
-          >
-            {game.name}
-          </li>
-        ))}
-      </ul>
-    </ListContainer>
+    <List
+      items={data.games}
+      type="game"
+      title="Upcoming Games"
+      contentConfig={listConfig}
+      isLoading={loading}
+      emptyDataMessage="No matching games were found."
+    />
   );
 }
 

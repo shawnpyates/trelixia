@@ -11,6 +11,7 @@ defmodule Trelixia.TriviaTest do
       current_question_expiry: "2010-04-17T14:00:00Z",
       current_question_id: 42,
       is_automated: true,
+      default_compare_threshold: '0.9',
       max_players: 42,
       scheduled_for: "2010-04-17T14:00:00Z"
     }

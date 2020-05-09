@@ -18,6 +18,7 @@ export const GET_ALL_GAMES = gql`
       name
       category
       maxPlayers
+      scheduledFor
     }
   }
 `;

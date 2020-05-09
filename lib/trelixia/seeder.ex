@@ -23,6 +23,7 @@ defmodule Trelixia.Seeder do
         current_question_expiry: ~U[2020-05-03 23:23:59Z],
         current_question_id: 1,
         is_automated: true,
+        default_compare_threshold: 0.9,
         max_players: 100,
         scheduled_for: ~U[2020-05-03 23:00:00Z],
         owner_id: user.id

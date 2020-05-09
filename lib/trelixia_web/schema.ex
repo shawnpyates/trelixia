@@ -53,11 +53,12 @@ defmodule TrelixiaWeb.Schema do
     field :create_game, :game do
       arg(:name, non_null(:string))
       arg(:category, non_null(:string))
-      arg(:current_question_expiry, :date)
+      arg(:current_question_expiry, :datetime)
       arg(:current_question_id, :id)
       arg(:is_automated, non_null(:boolean))
+      arg(:default_compare_threshold, :float)
       arg(:max_players, :integer)
-      arg(:scheduled_for, :date)
+      arg(:scheduled_for, :datetime)
       arg(:owner_id, non_null(:id))
 
       resolve(&GameResolver.create_game/3)
@@ -104,11 +105,12 @@ defmodule TrelixiaWeb.Schema do
       arg(:id, non_null(:id))
       arg(:name, :string)
       arg(:category, :string)
-      arg(:current_question_expiry, :date)
+      arg(:current_question_expiry, :datetime)
       arg(:current_question_id, :id)
       arg(:is_automated, :boolean)
+      arg(:default_compare_threshold, :float)
       arg(:max_players, :integer)
-      arg(:scheduled_for, :date)
+      arg(:scheduled_for, :datetime)
 
       resolve(&GameResolver.update_game/3)
     end
