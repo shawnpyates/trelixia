@@ -24,5 +24,11 @@ defmodule TrelixiaWeb.Types.GameTypes do
     field :scheduled_for, :datetime
     @desc "The user id of the game owner"
     field :owner_id, :id
+    @desc "The owner of the game"
+    field :user, :user
+    @desc "The list of users who are participating in the game"
+    field :users, list_of(:user)
+    @desc "The list questions in the game"
+    field :questions, list_of(:question)
   end
 end

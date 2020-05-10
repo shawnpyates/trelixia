@@ -3,7 +3,6 @@ import {
   TableBody,
   TableHead,
 } from '@material-ui/core';
-import dayjs from 'dayjs';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import PropTypes from 'prop-types';
 import { useHistory } from 'react-router-dom';
@@ -20,23 +19,7 @@ import {
   EmptyDataIndicator,
   LoadingIndicator,
 } from './styledComponents';
-
-const replaceDateString = (date) => {
-  if (dayjs().isSame(dayjs(date), 'day')) {
-    return 'Today';
-  }
-  if (dayjs().add(1, 'day').isSame(dayjs(date), 'day')) {
-    return 'Tomorrow';
-  }
-  return null;
-};
-
-const formatDate = (date) => {
-  const dateString = replaceDateString(date) || dayjs(date).format('MMM D, YYYY');
-  const timeString = dayjs(date).format('h:mm a');
-  return `${dateString} at ${timeString}`;
-};
-// const ENTER_KEY = 13;
+import { formatDate } from '../../utils';
 
 function List({
   title,

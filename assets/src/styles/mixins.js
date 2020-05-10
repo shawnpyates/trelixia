@@ -1,7 +1,7 @@
 export const TABLE_POSITION_MIXIN = `
   position: absolute;
   top: 100px;
-  left: 250px;
+  left: 415px;
   @media only screen and (max-width: 1040px) {
     left: 10%;
   }

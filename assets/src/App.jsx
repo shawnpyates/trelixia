@@ -12,6 +12,7 @@ import NavBar from './components/NavBar/NavBar';
 import ListAll from './containers/ListAll';
 import ShowGame from './containers/ShowGame';
 import CreateGame from './containers/CreateGame';
+import CreateUsername from './containers/CreateUsername';
 
 const useStyles = makeStyles(() => ({
   root: {
@@ -47,6 +48,9 @@ function App() {
               </Route>
               <Route path="/createGame">
                 <CreateGame />
+              </Route>
+              <Route path="/createUsername">
+                <CreateUsername />
               </Route>
               <Route>
                 <Redirect to="/" />

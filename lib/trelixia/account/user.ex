@@ -2,8 +2,10 @@ defmodule Trelixia.Account.User do
   use Ecto.Schema
   import Ecto.Changeset
 
+  alias Trelixia.Trivia.{Game, Favorite}
+
   @all_fields ~w(username email provider token is_registered current_game_id current_score)a
-  @required_fields ~w(username is_registered)a
+  @required_fields ~w(is_registered)a
 
   schema "users" do
     field :current_score, :integer
@@ -13,10 +15,10 @@ defmodule Trelixia.Account.User do
     field :token, :string
     field :username, :string
 
-    belongs_to :game, Trelixia.Trivia.Game, foreign_key: :current_game_id
+    belongs_to :game, Game, foreign_key: :current_game_id
 
-    has_many :games, Trelixia.Trivia.Game, foreign_key: :owner_id
-    has_many :favorites, Trelixia.Trivia.Favorite
+    has_many :games, Game, foreign_key: :owner_id
+    has_many :favorites, Favorite
 
     timestamps()
   end

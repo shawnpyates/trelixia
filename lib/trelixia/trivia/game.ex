@@ -2,6 +2,9 @@ defmodule Trelixia.Trivia.Game do
   use Ecto.Schema
   import Ecto.Changeset
 
+  alias Trelixia.Trivia.{Question, Favorite}
+  alias Trelixia.Account.User
+
   @all_fields ~w(name category max_players scheduled_for is_automated current_question_id current_question_expiry owner_id default_compare_threshold)a
   @required_fields ~w(name category is_automated)a
 
@@ -15,11 +18,11 @@ defmodule Trelixia.Trivia.Game do
     field :scheduled_for, :utc_datetime
     field :default_compare_threshold, :float
 
-    belongs_to :user, Trelixia.Account.User, foreign_key: :owner_id
+    belongs_to :user, User, foreign_key: :owner_id
 
-    has_many :users, Trelixia.Account.User, foreign_key: :current_game_id
-    has_many :questions, Trelixia.Trivia.Game
-    has_many :favorites, Trelixia.Trivia.Favorite
+    has_many :users, User, foreign_key: :current_game_id
+    has_many :questions, Question
+    has_many :favorites, Favorite
 
     timestamps()
   end

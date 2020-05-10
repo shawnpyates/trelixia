@@ -11,6 +11,8 @@ defmodule TrelixiaWeb.Router do
 
   pipeline :api do
     plug :accepts, ["json"]
+    plug :fetch_session
+    plug TrelixiaWeb.Plugs.SetUser
   end
 
   scope "/", TrelixiaWeb do
@@ -19,13 +21,19 @@ defmodule TrelixiaWeb.Router do
     get "/", PageController, :index
   end
 
+  scope "/auth", TrelixiaWeb do
+    pipe_through :api
+
+    get "/signout", AuthController, :signout
+    get "/:provider", AuthController, :request
+    get "/:provider/callback", AuthController, :callback
+  end
+
   scope "/api" do
     pipe_through :api
 
     forward "/graphql", Absinthe.Plug, schema: TrelixiaWeb.Schema
 
-    forward "/graphiql", Absinthe.Plug.GraphiQL,
-      schema: TrelixiaWeb.Schema,
-      interface: :playground
+    forward "/graphiql", Absinthe.Plug.GraphiQL, schema: TrelixiaWeb.Schema
   end
 end

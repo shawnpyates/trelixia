@@ -28,7 +28,7 @@ import {
   StyledTitle,
 } from './styledComponents';
 
-const AUTH_URL = "http://authexample.com";
+const AUTH_URL = "http://localhost:4003/auth";
 const currentUser = null;
 const isUserLoading = false;
 

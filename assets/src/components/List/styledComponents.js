@@ -34,7 +34,7 @@ const Button = styled(MaterialUiButton)`
 `;
 
 export const ListContainer = styled(TableContainer)`
-  width: 70%;
+  width: 55%;
 `;
 
 export const ListRow = styled(TableRow)`

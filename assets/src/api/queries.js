@@ -7,6 +7,13 @@ export const GET_GAME = gql`
       name
       category
       maxPlayers
+      scheduledFor
+      user {
+        username
+      }
+      questions {
+        id
+      }
     }
   }
 `;
@@ -17,8 +24,10 @@ export const GET_ALL_GAMES = gql`
       id
       name
       category
-      maxPlayers
       scheduledFor
+      users {
+        id
+      }
     }
   }
 `;
