@@ -13,9 +13,6 @@ function ListAll() {
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error :(</p>;
 
-  if (data) {
-    console.log('Data: ', data);
-  }
   return (
     <List
       items={data.games}

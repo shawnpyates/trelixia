@@ -12,7 +12,7 @@ defmodule TrelixiaWeb.Router do
   pipeline :api do
     plug :accepts, ["json"]
     plug :fetch_session
-    plug TrelixiaWeb.Plugs.SetUser
+    plug TrelixiaWeb.Context
   end
 
   scope "/", TrelixiaWeb do

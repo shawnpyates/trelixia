@@ -72,7 +72,7 @@ export const EDIT_USER = gql`
     $token: String,
     $currentGameId: ID,
     $currentScore: Int
-  ) {
+) {
     editUser(
       id: $id,
       username: $username,

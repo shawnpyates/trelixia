@@ -5,6 +5,10 @@ defmodule TrelixiaWeb.Resolvers.UserResolver do
     {:ok, Account.list_users()}
   end
 
+  def get_current_user(_, _, resolution) do
+    {:ok, resolution.context.current_user}
+  end
+
   def create_user(_, args, _) do
     Account.create_user(args)
   end
@@ -13,6 +17,7 @@ defmodule TrelixiaWeb.Resolvers.UserResolver do
     case Account.get_user!(id) do
       nil ->
         {:error, "User ID #{id} not found."}
+
       user ->
         Account.update_user(user, args)
     end

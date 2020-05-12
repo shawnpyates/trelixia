@@ -2,9 +2,17 @@ import React from 'react';
 import styled from 'styled-components';
 import { makeStyles } from '@material-ui/core/styles';
 import {
-  BrowserRouter as Router, Redirect, Route, Switch,
+  BrowserRouter as Router,
+  Redirect,
+  Route,
+  Switch,
 } from 'react-router-dom';
+import { useQuery } from '@apollo/react-hooks';
+
 import './App.css';
+
+import { GET_CURRENT_USER } from './api/queries';
+import { UserProvider } from './context/userContext';
 
 import DrawerComponent from './components/Drawer/Drawer';
 import NavBar from './components/NavBar/NavBar';
@@ -29,33 +37,37 @@ const AppContainer = styled.div`
 
 function App() {
   const { root } = useStyles();
+  const { loading, error, data } = useQuery(GET_CURRENT_USER);
+
   return (
     <div>
       <AppContainer>
         <div className={root}>
           <Router>
-            <NavBar />
-            <DrawerComponent />
-            <Switch>
-              <Route path="/" exact>
-                <div>Hello</div>
-              </Route>
-              <Route path="/games" exact>
-                <ListAll />
-              </Route>
-              <Route path="/games/:id">
-                <ShowGame />
-              </Route>
-              <Route path="/createGame">
-                <CreateGame />
-              </Route>
-              <Route path="/createUsername">
-                <CreateUsername />
-              </Route>
-              <Route>
-                <Redirect to="/" />
-              </Route>
-            </Switch>
+            <UserProvider currentUser={data && data.user} isUserLoading={loading}>
+              <NavBar />
+              <DrawerComponent />
+              <Switch>
+                <Route path="/" exact>
+                  <div>Hello</div>
+                </Route>
+                <Route path="/games" exact>
+                  <ListAll />
+                </Route>
+                <Route path="/games/:id">
+                  <ShowGame />
+                </Route>
+                <Route path="/createGame">
+                  <CreateGame />
+                </Route>
+                <Route path="/createUsername">
+                  <CreateUsername />
+                </Route>
+                <Route>
+                  <Redirect to="/" />
+                </Route>
+              </Switch>
+            </UserProvider>
           </Router>
         </div>
       </AppContainer>

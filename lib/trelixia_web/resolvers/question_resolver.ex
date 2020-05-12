@@ -9,6 +9,7 @@ defmodule TrelixiaWeb.Resolvers.QuestionResolver do
     case Trivia.get_question!(id) do
       nil ->
         {:error, "Question ID #{id} not found."}
+
       question ->
         Trivia.update_question(question, args)
     end

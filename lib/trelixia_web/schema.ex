@@ -17,6 +17,11 @@ defmodule TrelixiaWeb.Schema do
       resolve(&UserResolver.list_all_users/3)
     end
 
+    @desc "current_user"
+    field :user, :user do
+      resolve(&UserResolver.get_current_user/3)
+    end
+
     @desc "list_all_games"
     field :games, list_of(:game) do
       resolve(&GameResolver.list_all_games/3)

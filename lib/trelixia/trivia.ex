@@ -19,6 +19,7 @@ defmodule Trelixia.Trivia do
   """
   def list_games do
     now = DateTime.utc_now()
+
     query =
       from(
         g in Game,
@@ -26,6 +27,7 @@ defmodule Trelixia.Trivia do
         order_by: g.scheduled_for,
         preload: [:users]
       )
+
     Repo.all(query)
   end
 
