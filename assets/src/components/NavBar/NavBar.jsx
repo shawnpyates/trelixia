@@ -14,7 +14,7 @@ import {
   Toolbar,
 } from '@material-ui/core';
 
-import { menu as menuItems } from '../../content.json';
+import { menuItems } from '../../content';
 
 import {
   ButtonContainer,

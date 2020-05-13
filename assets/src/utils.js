@@ -15,3 +15,5 @@ export const formatDate = (date) => {
   const timeString = dayjs(date).format('h:mm a');
   return `${dateString} at ${timeString}`;
 };
+
+export const capitalize = (str) => `${str.charAt(0).toUpperCase()}${str.slice(1)}`;

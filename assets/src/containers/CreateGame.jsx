@@ -3,7 +3,7 @@ import { useMutation } from '@apollo/react-hooks';
 import { useHistory } from 'react-router-dom';
 
 import { CREATE_GAME } from '../api/mutations';
-import { createGame as createGameFormContent } from '../content.json';
+import { createGameForm } from '../content';
 
 import Form from '../components/Form/Form';
 
@@ -54,10 +54,10 @@ function CreateGame() {
   return (
     <Form
       handleSubmit={handleSubmit}
-      fields={createGameFormContent.fields}
-      title={createGameFormContent.title}
+      fields={createGameForm.fields}
+      title={createGameForm.title}
       validate={validate}
-      initialValues={createGameFormContent.initialValues}
+      initialValues={createGameForm.initialValues}
     />
   );
 }

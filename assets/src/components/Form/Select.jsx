@@ -4,6 +4,7 @@ import { FormControl, MenuItem } from '@material-ui/core';
 import PropTypes from 'prop-types';
 
 import { StyledField, StyledInputLabel } from './styledComponents';
+import { capitalize } from '../../utils';
 
 function Select({ field: { name, label, options } }) {
   return (
@@ -20,7 +21,7 @@ function Select({ field: { name, label, options } }) {
         }}
       >
         {options.map((option) => (
-          <MenuItem value={option}>{option}</MenuItem>
+          <MenuItem value={option}>{capitalize(option)}</MenuItem>
         ))}
       </StyledField>
     </FormControl>

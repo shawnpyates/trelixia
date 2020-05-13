@@ -7,11 +7,6 @@ defmodule TrelixiaWeb.AuthController do
 
   action_fallback TrelixiaWeb.FallbackController
 
-  def get_current(conn, _attrs) do
-    conn
-    |> render("show.json", user: conn.assigns.user)
-  end
-
   def callback(%{assigns: %{ueberauth_auth: auth}} = conn, _attrs) do
     user_attrs = %{
       token: auth.credentials.token,

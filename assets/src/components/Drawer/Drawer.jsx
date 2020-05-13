@@ -11,7 +11,7 @@ import {
   StyledListItemText,
 } from './styledComponents';
 
-import { menu as menuItems } from '../../content.json';
+import { menuItems } from '../../content';
 
 const useStyles = makeStyles((theme) => ({
   root: {

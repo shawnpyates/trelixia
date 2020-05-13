@@ -33,7 +33,7 @@ function Form({
             }) => (
               <FormikForm>
                 {fields.map((field) => (
-                  <FieldContainer>
+                  <FieldContainer key={field.name}>
                     <RenderFieldByType
                       field={field}
                       values={values}
@@ -56,7 +56,7 @@ Form.propTypes = {
   handleSubmit: PropTypes.func.isRequired,
   validate: PropTypes.func.isRequired,
   fields: PropTypes.arrayOf(PropTypes.any).isRequired,
-  initialValues: PropTypes.arrayOf(PropTypes.any).isRequired,
+  initialValues: PropTypes.objectOf(PropTypes.any).isRequired,
   title: PropTypes.string.isRequired,
 };
 

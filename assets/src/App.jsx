@@ -21,6 +21,7 @@ import ListAll from './containers/ListAll';
 import ShowGame from './containers/ShowGame';
 import CreateGame from './containers/CreateGame';
 import CreateUsername from './containers/CreateUsername';
+import Auth from './containers/Auth';
 
 const useStyles = makeStyles(() => ({
   root: {
@@ -50,6 +51,9 @@ function App() {
               <Switch>
                 <Route path="/" exact>
                   <div>Hello</div>
+                </Route>
+                <Route path="/auth">
+                  <Auth />
                 </Route>
                 <Route path="/games" exact>
                   <ListAll />

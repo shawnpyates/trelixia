@@ -3,6 +3,7 @@ import gql from 'graphql-tag';
 export const GET_CURRENT_USER = gql`
   query User {
     user {
+      id
       username
       email
     }
@@ -45,6 +46,8 @@ export const GET_GAMES_BY_CATEGORY = gql`
   query GamesByCategory($category: String!) {
     gamesByCategory(category: $category) {
       id
+      name
+      scheduledFor
       category
       maxPlayers
     }

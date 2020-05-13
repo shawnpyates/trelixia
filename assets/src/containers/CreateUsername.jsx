@@ -1,10 +1,11 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { useMutation } from '@apollo/react-hooks';
 import { useHistory } from 'react-router-dom';
 
 import { EDIT_USER } from '../api/mutations';
-import { createUsername as createUsernameFormContent } from '../content.json';
+import { createUsernameForm } from '../content';
 import Form from '../components/Form/Form';
+import { UserContext } from '../context/userContext';
 
 
 const validate = (values) => (
@@ -15,26 +16,28 @@ const validate = (values) => (
 
 
 function CreateUsername() {
-  // TODO - fetch real user after OAuth success
-  const [editUser, { data }] = useMutation(EDIT_USER);
+  const { currentUser } = useContext(UserContext);
+  const [editUser] = useMutation(EDIT_USER, {
+    refetchQueries: ['User'],
+  });
   const history = useHistory();
 
   const handleSubmit = ({ username }, { setSubmitting }) => {
     setSubmitting(false);
-    editUser({ variables: { username, id: 11 } });
+    editUser({ variables: { username, id: currentUser.id } });
   };
 
-  if (data) {
+  if (currentUser.username) {
     history.push('/');
   }
 
   return (
     <Form
       handleSubmit={handleSubmit}
-      fields={createUsernameFormContent.fields}
-      title={createUsernameFormContent.title}
+      fields={createUsernameForm.fields}
+      title={createUsernameForm.title}
       validate={validate}
-      initialValues={createUsernameFormContent.initialValues}
+      initialValues={createUsernameForm.initialValues}
     />
   );
 }
