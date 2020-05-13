@@ -258,6 +258,10 @@ defmodule Trelixia.Trivia do
   """
   def get_favorite!(id), do: Repo.get!(Favorite, id)
 
+  def get_favorite_by_attrs(user_id, game_id) do
+    Repo.get_by(Favorite, [user_id: user_id, game_id: game_id])
+  end
+
   @doc """
   Creates a favorite.
 

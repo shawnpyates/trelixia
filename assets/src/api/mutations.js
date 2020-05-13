@@ -62,6 +62,20 @@ export const CREATE_QUESTION = gql`
   }
 `;
 
+export const CREATE_FAVORITE = gql`
+  mutation CreateFavorite(
+    $userId: ID!,
+    $gameId: ID!,
+  ) {
+    createFavorite(
+      userId: $userId,
+      gameId: $gameId,
+    ) {
+      id
+    }
+  }
+`;
+
 export const EDIT_USER = gql`
   mutation EditUser(
     $id: ID!,
@@ -136,6 +150,14 @@ export const EDIT_QUESTION = gql`
       type: $type,
       pointValue: $pointValue,
     ) {
+      id
+    }
+  }
+`;
+
+export const DELETE_FAVORITE = gql`
+  mutation DeleteFavorite($id: ID!) {
+    deleteFavorite(id: $id) {
       id
     }
   }

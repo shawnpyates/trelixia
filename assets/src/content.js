@@ -25,6 +25,10 @@ export const menuItems = [
     text: 'Create New Game',
     link: '/createGame',
   },
+  {
+    text: 'My Bookmarked Games',
+    link: '/games?bookmarked=true',
+  },
   ...getCategoryMenuItems(),
 ];
 

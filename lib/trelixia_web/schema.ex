@@ -38,6 +38,13 @@ defmodule TrelixiaWeb.Schema do
       arg(:user_id, non_null(:id))
       resolve(&GameResolver.fetch_games_by_user_favorite/3)
     end
+
+    @desc "favorite"
+    field :favorite, :game do
+      arg(:user_id, non_null(:id))
+      arg(:game_id, non_null(:id))
+      resolve(&FavoriteResolver.get_favorite/3)
+    end
   end
 
   mutation do
@@ -132,6 +139,13 @@ defmodule TrelixiaWeb.Schema do
       arg(:point_value, :integer)
 
       resolve(&QuestionResolver.update_question/3)
+    end
+
+    @desc "delete_favorite"
+    field :delete_favorite, :favorite do
+      arg(:id, non_null(:id))
+
+      resolve(&FavoriteResolver.delete_favorite/3)
     end
   end
 end

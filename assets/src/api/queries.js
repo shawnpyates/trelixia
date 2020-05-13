@@ -58,8 +58,18 @@ export const GET_GAMES_BY_USER_FAVORITE = gql`
   query GamesByUserFavorite($userId: ID!) {
     gamesByUserFavorite(userId: $userId) {
       id
+      name
+      scheduledFor
       category
       maxPlayers
+    }
+  }
+`;
+
+export const GET_FAVORITE = gql`
+  query Favorite($userId: ID!, $gameId: ID!) {
+    favorite(userId: $userId, gameId: $gameId) {
+      id
     }
   }
 `;

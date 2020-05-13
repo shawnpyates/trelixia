@@ -17,7 +17,7 @@ import { UserProvider } from './context/userContext';
 import DrawerComponent from './components/Drawer/Drawer';
 import NavBar from './components/NavBar/NavBar';
 
-import ListAll from './containers/ListAll';
+import ListGames from './containers/ListGames';
 import ShowGame from './containers/ShowGame';
 import CreateGame from './containers/CreateGame';
 import CreateUsername from './containers/CreateUsername';
@@ -56,7 +56,7 @@ function App() {
                   <Auth />
                 </Route>
                 <Route path="/games" exact>
-                  <ListAll />
+                  <ListGames />
                 </Route>
                 <Route path="/games/:id">
                   <ShowGame />
