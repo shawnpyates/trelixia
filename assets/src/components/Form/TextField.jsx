@@ -4,11 +4,11 @@ import PropTypes from 'prop-types';
 
 import { StyledField } from './styledComponents';
 
-function TextField({ field: { name, label } }) {
+function TextField({ field: { name, label, type } }) {
   return (
     <StyledField
       name={name}
-      type={name}
+      type={type}
       label={label}
       component={FormikTextField}
     />

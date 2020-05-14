@@ -3,7 +3,7 @@ defmodule Trelixia.Account do
   The Account context.
   """
 
-  import Ecto.Query, warn: false
+  import Ecto.{Query, Changeset}, warn: false
   alias Trelixia.Repo
 
   alias Trelixia.Account.User
@@ -52,8 +52,15 @@ defmodule Trelixia.Account do
   def create_user(attrs \\ %{}) do
     %User{}
     |> User.changeset(attrs)
+    |> put_pass_hash()
     |> Repo.insert()
   end
+
+  defp put_pass_hash(%Ecto.Changeset{valid?: true, changes: %{password: password}} = changeset) do
+    change(changeset, Bcrypt.add_hash(password, hash_key: :password))
+  end
+
+  defp put_pass_hash(changeset), do: changeset
 
   @doc """
   Updates a user.

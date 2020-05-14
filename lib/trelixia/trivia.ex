@@ -32,11 +32,14 @@ defmodule Trelixia.Trivia do
   end
 
   def fetch_games_by_category(category) do
+    now = DateTime.utc_now()
+
     query =
       from(
         g in Game,
-        where: g.category == ^category,
-        order_by: [desc: g.inserted_at]
+        where: g.category == ^category and g.scheduled_for > ^now,
+        order_by: g.scheduled_for,
+        preload: [:users]
       )
 
     Repo.all(query)
@@ -259,7 +262,7 @@ defmodule Trelixia.Trivia do
   def get_favorite!(id), do: Repo.get!(Favorite, id)
 
   def get_favorite_by_attrs(user_id, game_id) do
-    Repo.get_by(Favorite, [user_id: user_id, game_id: game_id])
+    Repo.get_by(Favorite, user_id: user_id, game_id: game_id)
   end
 
   @doc """

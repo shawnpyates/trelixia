@@ -53,6 +53,7 @@ defmodule TrelixiaWeb.Schema do
       arg(:username, non_null(:string))
       arg(:is_registered, non_null(:boolean))
       arg(:email, :string)
+      arg(:password, :string)
       arg(:provider, :string)
       arg(:token, :string)
       arg(:current_game_id, :id)

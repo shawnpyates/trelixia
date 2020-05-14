@@ -10,6 +10,7 @@ defmodule TrelixiaWeb.Resolvers.UserResolver do
   end
 
   def create_user(_, args, _) do
+    # TODO: assign session with new user_id
     Account.create_user(args)
   end
 

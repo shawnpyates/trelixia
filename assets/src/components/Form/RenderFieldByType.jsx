@@ -16,6 +16,7 @@ function RenderFieldByType({
 }) {
   switch (field.type) {
     case 'text':
+    case 'password':
       return <TextField field={field} />;
     case 'select':
       return <Select field={field} />;

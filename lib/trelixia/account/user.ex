@@ -4,12 +4,13 @@ defmodule Trelixia.Account.User do
 
   alias Trelixia.Trivia.{Game, Favorite}
 
-  @all_fields ~w(username email provider token is_registered current_game_id current_score)a
+  @all_fields ~w(username email password provider token is_registered current_game_id current_score)a
   @required_fields ~w(is_registered)a
 
   schema "users" do
     field :current_score, :integer
     field :email, :string
+    field :password, :string
     field :is_registered, :boolean, default: false
     field :provider, :string
     field :token, :string

@@ -11,6 +11,8 @@ defmodule TrelixiaWeb.Types.UserTypes do
     field :is_registered, :boolean
     @desc "The email of the user"
     field :email, :string
+    @desc "The password of the user"
+    field :password, :string
     @desc "The provider of the user"
     field :provider, :string
     @desc "The token of the user"

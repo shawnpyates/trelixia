@@ -50,6 +50,42 @@ export const createUsernameForm = {
   ],
 };
 
+export const createUserForm = {
+  title: 'Register',
+  initialValues: {
+    username: '',
+    email: '',
+    firstPasswordEntry: '',
+    secondPasswordEntry: ''
+  },
+  fields: [
+    {
+      type: 'text',
+      label: 'Create a Username',
+      name: 'username',
+    },
+    {
+      type: 'text',
+      label: 'Email',
+      name: 'email',
+    },
+    {
+      type: 'password',
+      label: 'Create a Password',
+      name: 'firstPasswordEntry',
+    },
+    {
+      type: 'password',
+      label: 'Type Your Password Again',
+      name: 'secondPasswordEntry',
+    },
+    {
+      type: 'submitButton',
+      buttonText: 'Register',
+    }
+  ],
+}
+
 export const createGameForm = {
   title: 'Create a New Game',
   initialValues: {

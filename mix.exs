@@ -49,7 +49,8 @@ defmodule Trelixia.MixProject do
       {:corsica, "~> 1.0"},
       {:ueberauth, "~> 0.6"},
       {:ueberauth_github, "~> 0.7"},
-      {:ueberauth_google, "~> 0.8"}
+      {:ueberauth_google, "~> 0.8"},
+      {:bcrypt_elixir, "~> 2.0"}
     ]
   end
 
