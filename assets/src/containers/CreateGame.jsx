@@ -4,18 +4,9 @@ import { useHistory } from 'react-router-dom';
 
 import { CREATE_GAME } from '../api/mutations';
 import { createGameForm } from '../content';
+import { createGameSchema } from '../validationSchemas';
 
 import Form from '../components/Form/Form';
-
-const validate = (values) => {
-  const errors = {};
-  if (!values.name) {
-    errors.name = 'Name Required';
-  } else if (!values.category) {
-    errors.category = 'Category Required';
-  }
-  return errors;
-};
 
 function CreateGame() {
   const [createGame, { data }] = useMutation(CREATE_GAME);
@@ -56,7 +47,7 @@ function CreateGame() {
       handleSubmit={handleSubmit}
       fields={createGameForm.fields}
       title={createGameForm.title}
-      validate={validate}
+      validationSchema={createGameSchema}
       initialValues={createGameForm.initialValues}
     />
   );

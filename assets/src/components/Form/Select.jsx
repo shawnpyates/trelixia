@@ -1,12 +1,12 @@
 import React from 'react';
 import { Select as FormikSelect } from 'formik-material-ui';
-import { FormControl, MenuItem } from '@material-ui/core';
+import { FormControl, MenuItem, FormHelperText } from '@material-ui/core';
 import PropTypes from 'prop-types';
 
 import { StyledField, StyledInputLabel } from './styledComponents';
 import { capitalize } from '../../utils';
 
-function Select({ field: { name, label, options } }) {
+function Select({ field: { name, label, options }, errors, touched }) {
   return (
     <FormControl>
       <StyledInputLabel htmlFor={name}>
@@ -24,6 +24,10 @@ function Select({ field: { name, label, options } }) {
           <MenuItem value={option}>{capitalize(option)}</MenuItem>
         ))}
       </StyledField>
+      {(errors[name] && touched[name])
+      && (
+        <FormHelperText className="Mui-error">{errors[name]}</FormHelperText>
+      )}
     </FormControl>
   );
 }

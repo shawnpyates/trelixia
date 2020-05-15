@@ -11,7 +11,7 @@ import RenderFieldByType from './RenderFieldByType';
 function Form({
   handleSubmit,
   fields,
-  validate,
+  validationSchema,
   initialValues,
   title,
 }) {
@@ -22,7 +22,7 @@ function Form({
         <MuiPickersUtilsProvider utils={DateFnsUtils}>
           <Formik
             initialValues={initialValues}
-            validate={validate}
+            validationSchema={validationSchema}
             onSubmit={handleSubmit}
           >
             {({
@@ -30,11 +30,15 @@ function Form({
               isSubmitting,
               setFieldValue,
               values,
+              errors,
+              touched,
             }) => (
               <FormikForm>
                 {fields.map((field) => (
                   <FieldContainer key={field.name}>
                     <RenderFieldByType
+                      errors={errors}
+                      touched={touched}
                       field={field}
                       values={values}
                       setFieldValue={setFieldValue}
@@ -54,7 +58,7 @@ function Form({
 
 Form.propTypes = {
   handleSubmit: PropTypes.func.isRequired,
-  validate: PropTypes.func.isRequired,
+  validationSchema: PropTypes.objectOf(PropTypes.any).isRequired,
   fields: PropTypes.arrayOf(PropTypes.any).isRequired,
   initialValues: PropTypes.objectOf(PropTypes.any).isRequired,
   title: PropTypes.string.isRequired,

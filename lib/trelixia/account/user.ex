@@ -29,6 +29,6 @@ defmodule Trelixia.Account.User do
     user
     |> cast(attrs, @all_fields)
     |> validate_required(@required_fields)
-    |> unique_constraint(:username)
+    |> unique_constraint([:username, :email])
   end
 end

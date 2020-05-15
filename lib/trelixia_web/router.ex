@@ -40,11 +40,23 @@ defmodule TrelixiaWeb.Router do
     forward "/graphiql", Absinthe.Plug.GraphiQL, schema: TrelixiaWeb.Schema
   end
 
-  def absinthe_before_send(conn, %Absinthe.Blueprint{} = blueprint) do
-    if current_user = blueprint.execution.context[:current_user] do
-      put_session(conn, :user_id, current_user.id)
-    else
-      conn
+  def absinthe_before_send(
+        conn,
+        %Absinthe.Blueprint{} = %{result: result, execution: execution}
+      ) do
+    cond do
+      # if registered user created, replace unregistered session with newly registered one
+      created_user_id = get_in(result.data, ["createUser", "id"]) ->
+        put_session(conn, :user_id, String.to_integer(created_user_id))
+
+      authenticated_user_id = get_in(result.data, ["loginUser", "id"]) ->
+        put_session(conn, :user_id, String.to_integer(authenticated_user_id))
+
+      %{id: current_user_id} = execution.context.current_user ->
+        put_session(conn, :user_id, current_user_id)
+
+      true ->
+        conn
     end
   end
 

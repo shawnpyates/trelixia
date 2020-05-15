@@ -86,6 +86,30 @@ export const createUserForm = {
   ],
 }
 
+export const loginForm = {
+  title: 'Login',
+  initialValues: {
+    username: '',
+    password: '',
+  },
+  fields: [
+    {
+      type: 'text',
+      label: 'Username',
+      name: 'username',
+    },
+    {
+      type: 'password',
+      label: 'Password',
+      name: 'password',
+    },
+    {
+      type: 'submitButton',
+      buttonText: 'Login',
+    },
+  ],
+}
+
 export const createGameForm = {
   title: 'Create a New Game',
   initialValues: {

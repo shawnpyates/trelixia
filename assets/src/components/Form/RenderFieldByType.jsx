@@ -13,13 +13,15 @@ function RenderFieldByType({
   setFieldValue,
   submitForm,
   isSubmitting,
+  errors,
+  touched,
 }) {
   switch (field.type) {
     case 'text':
     case 'password':
       return <TextField field={field} />;
     case 'select':
-      return <Select field={field} />;
+      return <Select field={field} errors={errors} touched={touched} />;
     case 'slider':
       return (
         <Slider

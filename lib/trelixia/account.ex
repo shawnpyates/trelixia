@@ -2,6 +2,12 @@ defmodule Trelixia.Account do
   @moduledoc """
   The Account context.
   """
+  @email_constraint "users_email_index"
+  @username_constraint "users_username_index"
+  @email_constraint_error_message "Unable to create user. Email already exists."
+  @username_constraint_error_message "Unable to create user. Username already exists."
+  @user_not_found_error_message "Login failed: User not found."
+  @invalid_password_error_message "Login failed: Invalid password."
 
   import Ecto.{Query, Changeset}, warn: false
   alias Trelixia.Repo
@@ -50,10 +56,28 @@ defmodule Trelixia.Account do
 
   """
   def create_user(attrs \\ %{}) do
-    %User{}
-    |> User.changeset(attrs)
-    |> put_pass_hash()
-    |> Repo.insert()
+    try do
+      %User{} |> User.changeset(attrs) |> put_pass_hash() |> Repo.insert()
+    rescue
+      error in Ecto.ConstraintError ->
+        case error.constraint do
+          @email_constraint -> {:error, @email_constraint_error_message}
+          @username_constraint -> {:error, @username_constraint_error_message}
+        end
+    end
+  end
+
+  def login_user(%{username: username, password: password}) do
+    case Repo.get_by(User, username: username) do
+      nil ->
+        {:error, @user_not_found_error_message}
+
+      user ->
+        case Bcrypt.check_pass(user, password, hash_key: :password) do
+          {:ok, authenticated_user} -> authenticated_user
+          _ -> {:error, @invalid_password_error_message}
+        end
+    end
   end
 
   defp put_pass_hash(%Ecto.Changeset{valid?: true, changes: %{password: password}} = changeset) do

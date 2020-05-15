@@ -8,6 +8,7 @@ import {
   Switch,
 } from 'react-router-dom';
 import { useQuery } from '@apollo/react-hooks';
+import 'react-toastify/dist/ReactToastify.css';
 
 import './App.css';
 

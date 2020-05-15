@@ -18,6 +18,20 @@ export const CREATE_USER = gql`
   }
 `;
 
+export const LOGIN_USER = gql`
+  mutation LoginUser(
+    $username: String!,
+    $password: String!
+  ) {
+    loginUser(
+      username: $username,
+      password: $password,
+    ) {
+      id
+    }
+  }
+`;
+
 export const CREATE_GAME = gql`
   mutation CreateGame(
     $name: String!,

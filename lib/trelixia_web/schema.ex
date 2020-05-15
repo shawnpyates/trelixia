@@ -56,10 +56,16 @@ defmodule TrelixiaWeb.Schema do
       arg(:password, :string)
       arg(:provider, :string)
       arg(:token, :string)
-      arg(:current_game_id, :id)
-      arg(:current_score, :integer)
 
       resolve(&UserResolver.create_user/3)
+    end
+
+    @desc "login_user"
+    field :login_user, :user do
+      arg(:username, non_null(:string))
+      arg(:password, non_null(:string))
+
+      resolve(&UserResolver.login_user/3)
     end
 
     @desc "create_game"

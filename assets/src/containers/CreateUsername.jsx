@@ -6,14 +6,7 @@ import { EDIT_USER } from '../api/mutations';
 import { createUsernameForm } from '../content';
 import Form from '../components/Form/Form';
 import { UserContext } from '../context/userContext';
-
-
-const validate = (values) => (
-  values.username
-    ? {}
-    : { username: 'Username required.' }
-);
-
+import { createUsernameSchema } from '../validationSchemas';
 
 function CreateUsername() {
   const { currentUser } = useContext(UserContext);
@@ -36,7 +29,7 @@ function CreateUsername() {
       handleSubmit={handleSubmit}
       fields={createUsernameForm.fields}
       title={createUsernameForm.title}
-      validate={validate}
+      validationSchema={createUsernameSchema}
       initialValues={createUsernameForm.initialValues}
     />
   );
