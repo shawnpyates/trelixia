@@ -2,7 +2,12 @@ import React, { useContext } from 'react';
 import { useQuery } from '@apollo/react-hooks';
 import { useLocation } from 'react-router-dom';
 
-import { GET_ALL_GAMES, GET_GAMES_BY_CATEGORY, GET_GAMES_BY_USER_FAVORITE } from '../api/queries';
+import {
+  GET_ALL_GAMES,
+  GET_GAMES_BY_CATEGORY,
+  GET_GAMES_BY_USER_FAVORITE,
+  GET_GAMES_BY_HOST,
+} from '../api/queries';
 import { gameListTableContent } from '../content';
 import List from '../components/List/List';
 import { capitalize } from '../utils';
@@ -13,6 +18,7 @@ const useUrlQuery = () => new URLSearchParams(useLocation().search);
 const buildQuery = (userId, urlQuery) => {
   const category = urlQuery().get('category');
   const bookmarked = urlQuery().get('bookmarked');
+  const hosting = urlQuery().get('hosting');
   if (category) {
     return {
       type: GET_GAMES_BY_CATEGORY,
@@ -27,6 +33,14 @@ const buildQuery = (userId, urlQuery) => {
       arg: { userId },
       dataKey: 'gamesByUserFavorite',
       title: 'Your Upcoming Bookmarked Games',
+    };
+  }
+  if (hosting) {
+    return {
+      type: GET_GAMES_BY_HOST,
+      arg: { userId },
+      dataKey: 'gamesByHost',
+      title: 'Games You Are Hosting',
     };
   }
   return { type: GET_ALL_GAMES, dataKey: 'games', title: 'Upcoming Games' };

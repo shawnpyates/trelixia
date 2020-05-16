@@ -25,17 +25,20 @@ function Auth() {
     { refetchQueries: ['User'] },
   );
 
-  useEffect(() => {
-    // TODO - prevent both toasts appearing when both defined
-    const error = createUserError || loginUserError;
+  const displayErrorIfExists = (error) => {
     const errorMsg = error?.graphQLErrors[0]?.message;
     if (errorMsg) {
-      toast(
-        errorMsg,
-        { autoClose: 2000, hideProgressBar: true },
-      );
+      toast(errorMsg, { autoClose: 2000, hideProgressBar: true });
     }
-  }, [createUserError, loginUserError]);
+  };
+
+  useEffect(() => {
+    displayErrorIfExists(createUserError);
+  }, [createUserError]);
+
+  useEffect(() => {
+    displayErrorIfExists(loginUserError);
+  }, [loginUserError])
 
   useEffect(() => {
     if (currentUser?.isRegistered) {

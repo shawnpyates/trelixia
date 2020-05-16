@@ -39,6 +39,12 @@ defmodule TrelixiaWeb.Schema do
       resolve(&GameResolver.fetch_games_by_user_favorite/3)
     end
 
+    @desc "fetch_games_by_host"
+    field :games_by_host, list_of(:game) do
+      arg(:user_id, non_null(:id))
+      resolve(&GameResolver.fetch_games_by_host/3)
+    end
+
     @desc "favorite"
     field :favorite, :game do
       arg(:user_id, non_null(:id))

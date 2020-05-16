@@ -6,7 +6,7 @@ const gameCategories = [
   'science',
   'music',
   'film',
-  'literature'
+  'literature',
 ];
 
 const getCategoryMenuItems = () => (
@@ -14,7 +14,7 @@ const getCategoryMenuItems = () => (
     text: category.toUpperCase(),
     link: `/games?category=${category}`,
   }))
-)
+);
 
 export const menuItems = [
   {
@@ -24,6 +24,10 @@ export const menuItems = [
   {
     text: 'Create New Game',
     link: '/createGame',
+  },
+  {
+    text: 'Games I\'m Hosting',
+    link: '/games?hosting=true',
   },
   {
     text: 'My Bookmarked Games',
@@ -46,7 +50,7 @@ export const createUsernameForm = {
     {
       type: 'submitButton',
       buttonText: 'Create Username',
-    }
+    },
   ],
 };
 
@@ -56,7 +60,7 @@ export const createUserForm = {
     username: '',
     email: '',
     firstPasswordEntry: '',
-    secondPasswordEntry: ''
+    secondPasswordEntry: '',
   },
   fields: [
     {
@@ -82,9 +86,9 @@ export const createUserForm = {
     {
       type: 'submitButton',
       buttonText: 'Register',
-    }
+    },
   ],
-}
+};
 
 export const loginForm = {
   title: 'Login',
@@ -108,7 +112,7 @@ export const loginForm = {
       buttonText: 'Login',
     },
   ],
-}
+};
 
 export const createGameForm = {
   title: 'Create a New Game',
@@ -120,13 +124,13 @@ export const createGameForm = {
     maxPlayers: 50,
     shouldScheduleTime: false,
     scheduledFor: null,
-    ownerId: 11
+    ownerId: 11,
   },
   fields: [
     {
       type: 'text',
       label: 'Name',
-      name: 'name'
+      name: 'name',
     },
     {
       type: 'select',
@@ -138,7 +142,7 @@ export const createGameForm = {
       type: 'slider',
       toggle: {
         name: 'isAutomated',
-        label: 'Run the game in Automated Mode'
+        label: 'Run the game in Automated Mode',
       },
       slider: {
         id: 'required-score-slider',
@@ -148,14 +152,14 @@ export const createGameForm = {
         min: 0.50,
         max: 1.0,
         decimalPlaces: 2,
-        defaultValue: 0.90
-      }
+        defaultValue: 0.90,
+      },
     },
     {
       type: 'slider',
       toggle: {
         name: 'shouldSetMaxPlayers',
-        label: 'Set a maximum number of players allowed to participate'
+        label: 'Set a maximum number of players allowed to participate',
       },
       slider: {
         id: 'max-players-slider',
@@ -164,39 +168,39 @@ export const createGameForm = {
         step: 1,
         min: 1,
         max: 100,
-        defaultValue: 50
-      }
+        defaultValue: 50,
+      },
     },
     {
       type: 'dateTimePicker',
       toggle: {
         name: 'shouldScheduleTime',
-        label: 'Schedule a time for your game to start'
+        label: 'Schedule a time for your game to start',
       },
       picker: {
         name: 'scheduledFor',
-        label: 'Set Time'
-      }
+        label: 'Set Time',
+      },
     },
     {
       type: 'submitButton',
-      buttonText: 'Submit'
-    }
-  ]
+      buttonText: 'Submit',
+    },
+  ],
 };
 
 export const gameListTableContent = [
   {
     header: 'Name',
-    key: 'name'
+    key: 'name',
   },
   {
     header: 'Category',
-    key: 'category'
+    key: 'category',
   },
   {
     header: 'Scheduled For',
     key: 'scheduledFor',
-    isTimestamp: true
-  }
+    isTimestamp: true,
+  },
 ];

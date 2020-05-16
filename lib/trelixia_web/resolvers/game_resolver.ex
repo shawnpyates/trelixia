@@ -35,6 +35,16 @@ defmodule TrelixiaWeb.Resolvers.GameResolver do
     end
   end
 
+  def fetch_games_by_host(_, %{user_id: user_id}, _) do
+    case Trivia.fetch_games_by_host(user_id) do
+      nil ->
+        {:error, "User ID #{user_id} not found."}
+
+      games ->
+        {:ok, games}
+    end
+  end
+
   def create_game(_, args, _) do
     Trivia.create_game(args)
   end

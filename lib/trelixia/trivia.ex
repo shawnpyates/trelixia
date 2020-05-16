@@ -46,14 +46,27 @@ defmodule Trelixia.Trivia do
   end
 
   def fetch_games_by_user_favorite(user_id) do
+    now = DateTime.utc_now()
+
     query =
       from(
         g in Game,
         join: f in assoc(g, :favorites),
-        where: f.user_id == ^user_id,
+        where: f.user_id == ^user_id and g.scheduled_for > ^now,
         order_by: [desc: g.inserted_at]
       )
 
+    Repo.all(query)
+  end
+
+  def fetch_games_by_host(user_id) do
+    now = DateTime.utc_now()
+
+    query = from(
+      g in Game,
+      where: g.owner_id == ^user_id and g.scheduled_for > ^now,
+      order_by: [desc: g.inserted_at]
+    )
     Repo.all(query)
   end
 

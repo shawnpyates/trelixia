@@ -19,6 +19,7 @@ export const GET_GAME = gql`
       category
       maxPlayers
       scheduledFor
+      ownerId
       user {
         username
       }
@@ -58,6 +59,18 @@ export const GET_GAMES_BY_CATEGORY = gql`
 export const GET_GAMES_BY_USER_FAVORITE = gql`
   query GamesByUserFavorite($userId: ID!) {
     gamesByUserFavorite(userId: $userId) {
+      id
+      name
+      scheduledFor
+      category
+      maxPlayers
+    }
+  }
+`;
+
+export const GET_GAMES_BY_HOST = gql`
+  query GamesByHost($userId: ID!) {
+    gamesByHost(userId: $userId) {
       id
       name
       scheduledFor

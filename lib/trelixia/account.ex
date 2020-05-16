@@ -75,7 +75,7 @@ defmodule Trelixia.Account do
       user ->
         case Bcrypt.check_pass(user, password, hash_key: :password) do
           {:ok, authenticated_user} -> authenticated_user
-          _ -> {:error, @invalid_password_error_message}
+          {:error, _reason} -> {:error, @invalid_password_error_message}
         end
     end
   end
