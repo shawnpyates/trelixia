@@ -42,6 +42,8 @@ export const CREATE_GAME = gql`
     $maxPlayers: Int,
     $scheduledFor: String,
     $defaultCompareThreshold: Float,
+    $defaultTimeAllotment: Int!,
+    $defaultQuestionType: String!,
     $ownerId: ID!
   ) {
     createGame(
@@ -53,6 +55,8 @@ export const CREATE_GAME = gql`
       maxPlayers: $maxPlayers,
       scheduledFor: $scheduledFor,
       defaultCompareThreshold: $defaultCompareThreshold,
+      defaultTimeAllotment: $defaultTimeAllotment,
+      defaultQuestionType: $defaultQuestionType,
       ownerId: $ownerId
     ) {
       id
@@ -174,6 +178,14 @@ export const EDIT_QUESTION = gql`
       type: $type,
       pointValue: $pointValue,
     ) {
+      id
+    }
+  }
+`;
+
+export const DELETE_QUESTION = gql`
+  mutation DeleteQuestion($id: ID!) {
+    deleteQuestion(id: $id) {
       id
     }
   }

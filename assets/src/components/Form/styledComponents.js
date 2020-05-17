@@ -24,6 +24,11 @@ export const theme = createMuiTheme({
         display: 'block',
       },
     },
+    MuiFormControlLabel: {
+      root: {
+        marginRight: '10px',
+      },
+    },
     MuiInputBase: {
       root: {
         width: '100%',
@@ -43,9 +48,19 @@ export const theme = createMuiTheme({
         color: '#FFF',
       },
     },
+    MuiFormGroup: {
+      root: {
+        flexDirection: 'unset',
+      },
+    },
     MuiButton: {
       label: {
         color: '#000',
+      },
+    },
+    PrivateRadioButtonIcon: {
+      root: {
+        color: 'lightgray',
       },
     },
   },

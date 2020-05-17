@@ -124,7 +124,10 @@ export const createGameForm = {
     maxPlayers: 50,
     shouldScheduleTime: false,
     scheduledFor: null,
+    isAutomated: false,
     ownerId: 11,
+    defaultTimeAllotment: 30,
+    defaultQuestionType: 'FIRST_ANSWER_WINS',
   },
   fields: [
     {
@@ -137,6 +140,35 @@ export const createGameForm = {
       label: 'Choose a Category',
       name: 'category',
       options: gameCategories,
+    },
+    {
+      type: 'slider',
+      slider: {
+        id: 'default-time-allotment-slider',
+        name: 'defaultTimeAllotment',
+        label: 'Default Time Allowed for Each Question (in seconds)',
+        step: 1,
+        min: 5,
+        max: 300,
+        defaultValue: 30,
+      },
+    },
+    {
+      type: 'radioGroup',
+      label: 'Select a Default Question Type',
+      name: 'defaultQuestionType',
+      options: [
+        {
+          value: 'FIRST_ANSWER_WINS',
+          label: 'First Answer Wins',
+          description: 'The question round ends as soon as a correct answer is submitted, and only a single user wins the point(s).',
+        },
+        {
+          value: 'TIMED',
+          label: 'Timed',
+          description: 'The question round lasts the full duration of the specified time allowance, and every user who submits a correct answer in time wins the point(s).',
+        },
+      ]
     },
     {
       type: 'slider',

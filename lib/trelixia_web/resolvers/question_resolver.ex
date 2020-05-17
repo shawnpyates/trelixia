@@ -14,4 +14,10 @@ defmodule TrelixiaWeb.Resolvers.QuestionResolver do
         Trivia.update_question(question, args)
     end
   end
+
+  def delete_question(_, %{id: id}, _) do
+    with question <- Trivia.get_question!(id) do
+      Trivia.delete_question(question)
+    end
+  end
 end

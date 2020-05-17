@@ -24,6 +24,8 @@ function CreateGame() {
       defaultCompareThreshold,
       maxPlayers,
       scheduledFor,
+      defaultTimeAllotment,
+      defaultQuestionType,
       ownerId,
     },
     { setSubmitting },
@@ -38,6 +40,8 @@ function CreateGame() {
         maxPlayers,
         scheduledFor,
         ownerId,
+        defaultTimeAllotment,
+        defaultQuestionType,
       },
     });
   };

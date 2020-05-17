@@ -82,6 +82,8 @@ defmodule TrelixiaWeb.Schema do
       arg(:current_question_id, :id)
       arg(:is_automated, non_null(:boolean))
       arg(:default_compare_threshold, :float)
+      arg(:default_time_allotment, non_null(:integer))
+      arg(:default_question_type, non_null(:string))
       arg(:max_players, :integer)
       arg(:scheduled_for, :datetime)
       arg(:owner_id, non_null(:id))
@@ -97,7 +99,7 @@ defmodule TrelixiaWeb.Schema do
       arg(:time_allotment, non_null(:integer))
       arg(:topic, :string)
       arg(:type, :string)
-      arg(:point_value, :integer)
+      arg(:point_value, non_null(:integer))
       arg(:game_id, non_null(:id))
 
       resolve(&QuestionResolver.create_question/3)
@@ -152,6 +154,13 @@ defmodule TrelixiaWeb.Schema do
       arg(:point_value, :integer)
 
       resolve(&QuestionResolver.update_question/3)
+    end
+
+    @desc "delete_question"
+    field :delete_question, :question do
+      arg(:id, non_null(:id))
+
+      resolve(&QuestionResolver.delete_question/3)
     end
 
     @desc "delete_favorite"

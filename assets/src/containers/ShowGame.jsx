@@ -10,7 +10,13 @@ import { useParams } from 'react-router-dom';
 import shortid from 'shortid';
 
 import { GET_GAME, GET_FAVORITE } from '../api/queries';
-import { CREATE_FAVORITE, DELETE_FAVORITE } from '../api/mutations';
+import {
+  CREATE_QUESTION,
+  EDIT_QUESTION,
+  DELETE_QUESTION,
+  CREATE_FAVORITE,
+  DELETE_FAVORITE,
+} from '../api/mutations';
 import { formatDate } from '../utils';
 import { UserContext } from '../context/userContext';
 import QuestionList from '../components/QuestionList/QuestionList';
@@ -19,15 +25,25 @@ const questionSetModes = {
   VIEW: 'view',
   ADD: 'add',
   EDIT: 'edit',
-}
+};
+
+const questionTypes = {
+  FIRST_ANSWER_WINS: {
+    value: 'FIRST_ANSWER_WINS',
+    label: 'First Answer Wins',
+  },
+  TIMED: {
+    value: 'TIMED',
+    label: 'Timed'
+  }
+};
 
 const GameContainer = styled.div`
   height: 500px;
-  width: 500px;
 
   position: absolute;
   top: 100px;
-  left: 415px;
+  left: 350px;
   @media only screen and (max-width: 1040px) {
     left: 10%;
   }
@@ -47,7 +63,7 @@ const Bookmark = styled.div`
   font-size: 18px;
   position: absolute;
   top: 25px;
-  right: 100px;
+  right: 25%;
   text-transform: uppercase;
   cursor: pointer;
 `;
@@ -75,7 +91,7 @@ function ShowGame() {
   const [currentMode, setCurrentMode] = useState(questionSetModes.VIEW);
   const previousMode = usePrevious(currentMode);
   const [temporaryRows, setTemporaryRows] = useState(null);
-  
+
 
   const useMultipleQueries = () => {
     const gameResult = useQuery(GET_GAME, { variables: { id } });
@@ -97,13 +113,18 @@ function ShowGame() {
     error,
   } = useMultipleQueries();
 
-  const refetchQueries = { refetchQueries: ['Favorite'] };
-  const [createFavorite] = useMutation(CREATE_FAVORITE, refetchQueries);
-  const [deleteFavorite] = useMutation(DELETE_FAVORITE, refetchQueries);
+  const refetchFavorite = { refetchQueries: ['Favorite'] };
+  const [createFavorite] = useMutation(CREATE_FAVORITE, refetchFavorite);
+  const [deleteFavorite] = useMutation(DELETE_FAVORITE, refetchFavorite);
+
+  const refetchGame = { refetchQueries: ['Game'] };
+  const [createQuestion] = useMutation(CREATE_QUESTION, refetchGame);
+  const [editQuestion] = useMutation(EDIT_QUESTION, refetchGame);
+  const [deleteQuestion] = useMutation(DELETE_QUESTION, refetchGame);
 
   const { mutationFn, mutationArgs, bookmarkText } = (
     favoriteData
-      ? { 
+      ? {
         mutationFn: deleteFavorite,
         mutationArgs: { id: favoriteData.id },
         bookmarkText: 'Remove Bookmark',
@@ -158,6 +179,22 @@ function ShowGame() {
     ]);
   };
 
+  const handleQuestionSubmit = ({
+    index,
+    shouldRemoveTempRow,
+    variables,
+  }) => {
+    const mutation = currentMode === questionSetModes.ADD ? createQuestion : editQuestion;
+    mutation({ variables });
+    if (shouldRemoveTempRow) {
+      setTemporaryRows(
+        temporaryRows.length > 1
+          ? [...temporaryRows.slice(0, index),...temporaryRows.slice(index + 1)]
+          : [getInitialNewRow()]
+      );
+    }
+  };
+
 
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error :(</p>;
@@ -189,8 +226,11 @@ function ShowGame() {
         temporaryRows={temporaryRows}
         handleTextareaChange={handleTextareaChange}
         addNewRow={addNewRow}
+        handleQuestionSubmit={handleQuestionSubmit}
+        deleteQuestion={deleteQuestion}
         game={gameData}
         isLoading={loading}
+        questionTypes={questionTypes}
       />
     </GameContainer>
   );

@@ -11,7 +11,6 @@ import { DeleteForever } from '@material-ui/icons';
 import { TABLE_POSITION_MIXIN } from '../../styles/mixins';
 
 export const ListContainer = styled(MaterialUiTableContainer)`
-  width: 80%;
 `;
 
 export const ListTable = styled(Table)`
@@ -20,16 +19,21 @@ export const ListTable = styled(Table)`
 `;
 
 export const ListButton = styled(MaterialUiButton)`
+  background-color: #FFF;
   ${(props) => (
     props.createnewitem
       ? ''
-      : 'margin-right: 25px;'
+      : 'margin-right: 10px;'
   )}
   ${(props) => (
     props.addnewrow
       ? 'width: 80px; font-size: 10px;'
-      : ''
+      : 'width: max-content;'
   )}
+
+  &:hover {
+    background-color: gray;
+  }
   display: ${((props) => (props.ishidden ? 'none' : 'initial'))}
 `;
 
@@ -48,6 +52,7 @@ export const StyledDeleteIcon = styled(DeleteForever)`
 `;
 
 export const ContentTableCell = styled(MaterialUiTableCell)`
+  color: #FFF;
   width: calc(100% / ${(props) => props.columnlength});
   ${(props) => (props.islast && 'border-bottom: none;') || ''}
   ${(props) => (props.fornewrowbutton && 'padding-bottom: 35px;') || ''}
@@ -67,10 +72,7 @@ export const TableContainer = styled(MaterialUiTableContainer)`
 export const Button = styled(MaterialUiButton)`
   background-color: blue;
   color: #FFF;
-  &:hover {
-    background-color: green;
-  }
-  &:disabled{ 
+  &:disabled{
     background-color: gray;
   }
 `;
@@ -78,6 +80,7 @@ export const Button = styled(MaterialUiButton)`
 export const HeadTableCell = styled(MaterialUiTableCell)`
   font-weight: 700;
   text-transform: uppercase;
+  color: #FFF;
 `;
 
 export const EmptyDataIndicator = styled.div`

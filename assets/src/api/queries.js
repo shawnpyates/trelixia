@@ -20,11 +20,22 @@ export const GET_GAME = gql`
       maxPlayers
       scheduledFor
       ownerId
+      isAutomated
+      defaultCompareThreshold
+      defaultTimeAllotment
+      defaultQuestionType
       user {
         username
       }
       questions {
         id
+        questionText
+        answer
+        timeAllotment
+        compareThreshold
+        topic
+        pointValue
+        type
       }
     }
   }

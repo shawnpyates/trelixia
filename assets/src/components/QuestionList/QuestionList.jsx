@@ -1,8 +1,10 @@
-import React, { Fragment } from 'react';
+import React, { Fragment, useState } from 'react';
 import {
+  Popover,
   TableBody,
   TableHead,
   TableRow,
+  Tooltip,
 } from '@material-ui/core';
 import PropTypes from 'prop-types';
 
@@ -26,30 +28,65 @@ function QuestionList({
   temporaryRows,
   handleTextareaChange,
   addNewRow,
+  handleQuestionSubmit,
+  deleteQuestion,
   game,
   isLoading,
+  questionTypes,
 }) {
+  const [popoverEl, setPopoverEl] = useState(null);
+
+  const handleOptionsClick = (event) => {
+    setPopoverEl(event.currentTarget);
+  }
+
+  const handleOptionsClose = () => {
+    setPopoverEl(null);
+  };
+
+  const getTooltipTitle = ({
+    compareThreshold,
+    timeAllotment,
+    type,
+    pointValue,
+  }) => (
+    <Fragment>
+      {game.isAutomated
+      && (
+        <p>Required Match Score: {compareThreshold || game.defaultCompareThreshold}</p>
+      )}
+      <p>Time Allowed (s): {timeAllotment || game.defaultTimeAllotment}</p>
+      <p>Type: {questionTypes[type]?.label || questionTypes[game.defaultQuestionType]?.label}</p>
+      <p>Point Value: {pointValue || 1}</p>
+    </Fragment>
+  );
+
   const renderQuestions = (questions) => (
-    questions.map(({ id, questionText, answer }) => (
+    questions.map(({
+      id,
+      questionText,
+      answer,
+      topic,
+    }) => (
       <TableRow key={id}>
         {[questionSetModes.VIEW, questionSetModes.ADD].includes(currentMode)
         && (
           <>
-            <ContentTableCell columnlength={2}>
+            <ContentTableCell columnlength={3}>
               {questionText}
             </ContentTableCell>
-            <ContentTableCell columnlength={2}>
+            <ContentTableCell columnlength={3}>
               {answer}
             </ContentTableCell>
+            <ContentTableCell columnlength={3}>
+              {topic || 'n/a'}
+            </ContentTableCell>
             <SideContent>
-              {isSetFromCurrentUser
-              && (
-                <StyledDeleteIcon
-                  onClick={() => {
-                    // setQuestionUnderOperation({ type: DELETE_CARD, id, submit: true });
-                  }}
-                />
-              )}
+              <StyledDeleteIcon
+                onClick={() => {
+                  deleteQuestion({ variables: { id } });
+                }}
+              />
             </SideContent>
           </>
         )}
@@ -63,22 +100,34 @@ function QuestionList({
         <tr>
           <HeadTableCell>Question</HeadTableCell>
           <HeadTableCell>Answer</HeadTableCell>
+          <HeadTableCell>Topic (Optional)</HeadTableCell>
         </tr>
       </TableHead>
       <TableBody>
         {([questionSetModes.ADD, questionSetModes.EDIT].includes(currentMode) && temporaryRows)
         && temporaryRows.map(({
-          questionText, answer, shortid: key, id,
+          questionText,
+          answer,
+          topic,
+          compareThreshold,
+          timeAllotment,
+          type,
+          pointValue,
+          shortid: key,
+          id,
         }, i) => {
           const isLast = i === temporaryRows.length - 1;
-          const { type, buttonText, shouldDisplayNewRowButton } = (
+          const {
+            buttonText,
+            shouldDisplayNewRowButton,
+            shouldRemoveTempRowOnSubmit,
+          } = (
             currentMode === questionSetModes.ADD
               ? {
-                // type: CREATE_NEW_CARD,
                 buttonText: 'Add',
+                shouldRemoveTempRowOnSubmit: true,
                 shouldDisplayNewRowButton: isLast,
               } : {
-                // type: EDIT_CARD,
                 buttonText: 'Edit',
               }
           );
@@ -90,34 +139,78 @@ function QuestionList({
               && correspondingQuestion.answer === answer
             )
           );
-
           return (
             <Fragment key={id || key}>
               <TableRow>
-                <ContentTableCell columnlength={2} islast={String(isLast || '')}>
+                <ContentTableCell columnlength={3} islast={String(isLast || '')}>
                   <StyledTextarea
-                    name="question"
+                    name="questionText"
                     value={questionText || ''}
-                    onChange={(ev) => handleTextareaChange(ev, i)}
+                    onChange={(ev) => {
+                      handleTextareaChange(ev, i)
+                    }}
                     rowsMin={3}
                   />
                 </ContentTableCell>
-                <ContentTableCell columnlength={2} islast={String(isLast || '')}>
+                <ContentTableCell columnlength={3} islast={String(isLast || '')}>
                   <StyledTextarea
                     name="answer"
                     value={answer || ''}
-                    onChange={(ev) => handleTextareaChange(ev, i)}
+                    onChange={(ev) => {
+                      handleTextareaChange(ev, i)
+                    }}
                     rowsMin={3}
                   />
                 </ContentTableCell>
+                <ContentTableCell columnlength={3} islast={String(isLast || '')}>
+                  <StyledTextarea
+                    name="topic"
+                    value={topic || ''}
+                    onChange={(ev) => {
+                      handleTextareaChange(ev, i)
+                    }}
+                    rowsMin={3}
+                  />
+                </ContentTableCell>
+                <SideContent>
+                  <Tooltip
+                    title={getTooltipTitle({ compareThreshold, timeAllotment, type, pointValue })}
+                  >
+                    <ListButton
+                      aria-describedby={popoverEl && 'options-popover'}
+                      onClick={handleOptionsClick}
+                    >
+                      Other Options
+                    </ListButton>
+                  </Tooltip>
+                  <Popover
+                    id={'options-popover'}
+                    open={Boolean(popoverEl)}
+                    anchorEl={popoverEl}
+                    onClose={handleOptionsClose}
+                    anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+                    transformOrigin={{ vertical: 'top', horizontal: 'center' }}
+                  >
+                    <div style={{ height: '300px', width: '300px' }}>Options form upcoming...</div>
+                  </Popover>
+                </SideContent>
                 <SideContent>
                   <ListButton
                     createnewitem="true"
                     disabled={!questionText || !answer || isUnchanged}
                     onClick={() => {
-                      // setQuestionUnderOperation({
-                      //   type, question, answer, index: i, id, submit: true,
-                      // });
+                      handleQuestionSubmit({
+                        index: i,
+                        shouldRemoveTempRow: shouldRemoveTempRowOnSubmit,
+                        variables: {
+                          id,
+                          questionText,
+                          answer,
+                          timeAllotment: 60,
+                          gameId: game.id,
+                          pointValue: 1,
+                        },
+                      });
                     }}
                   >
                     {buttonText}
@@ -127,10 +220,11 @@ function QuestionList({
               {shouldDisplayNewRowButton
               && (
                 <TableRow key="addnew">
-                  <ContentTableCell columnlength={2} fornewrowbutton="true">
+                  <ContentTableCell columnlength={3} fornewrowbutton="true">
                     <ListButton addnewrow="true" onClick={addNewRow}>+ New Row</ListButton>
                   </ContentTableCell>
-                  <ContentTableCell columnlength={2} />
+                  <ContentTableCell columnlength={3} />
+                  <ContentTableCell columnlength={3} />
                 </TableRow>
               )}
             </Fragment>

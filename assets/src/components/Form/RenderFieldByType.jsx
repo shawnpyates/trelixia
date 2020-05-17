@@ -6,6 +6,7 @@ import Select from './Select';
 import Slider from './Slider';
 import DateTimePicker from './DateTimePicker';
 import SubmitButton from './SubmitButton';
+import RadioGroup from './RadioGroup';
 
 function RenderFieldByType({
   field,
@@ -36,6 +37,13 @@ function RenderFieldByType({
           field={field}
           setFieldValue={setFieldValue}
           values={values}
+        />
+      );
+    case 'radioGroup':
+      return (
+        <RadioGroup
+          field={field}
+          isSubmitting={isSubmitting}
         />
       );
     case 'submitButton':

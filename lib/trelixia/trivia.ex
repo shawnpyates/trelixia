@@ -84,7 +84,10 @@ defmodule Trelixia.Trivia do
       ** (Ecto.NoResultsError)
 
   """
-  def get_game!(id), do: Repo.get!(Game, id) |> Repo.preload([:user, :questions])
+  def get_game!(id) do
+    question_query = from q in Question, order_by: q.inserted_at
+    Repo.get!(Game, id) |> Repo.preload([:user, questions: question_query])
+  end
 
   @doc """
   Creates a game.
