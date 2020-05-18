@@ -221,6 +221,61 @@ export const createGameForm = {
   ],
 };
 
+export const questionOptionsForm = {
+  title: 'Modify Question Options',
+  fields: [
+    {
+      type: 'slider',
+      name: 'compareThreshold',
+      slider: {
+        id: 'required-score-slider',
+        name: 'compareThreshold',
+        label: 'Required Match Score',
+        step: 0.01,
+        min: 0.50,
+        max: 1.0,
+        decimalPlaces: 2,
+      },
+    },
+    {
+      type: 'slider',
+      name: 'timeAllotment',
+      slider: {
+        id: 'time-allotment-slider',
+        name: 'timeAllotment',
+        label: 'Time Allowed for the Question (in seconds)',
+        step: 1,
+        min: 5,
+        max: 300,
+        defaultValue: 30,
+      },
+    },
+    {
+      type: 'radioGroup',
+      label: 'Question Type',
+      name: 'type',
+      options: [
+        {
+          value: 'FIRST_ANSWER_WINS',
+          label: 'First Answer Wins',
+          description: 'The question round ends as soon as a correct answer is submitted, and only a single user wins the point(s).',
+        },
+        {
+          value: 'TIMED',
+          label: 'Timed',
+          description: 'The question round lasts the full duration of the specified time allowance, and every user who submits a correct answer in time wins the point(s).',
+        },
+      ]
+    },
+    {
+      type: 'text',
+      headerLabel: 'Point Value (Minimum 1, Maximum 10000)',
+      name: 'pointValue',
+      defaultValue: 1,
+    },
+  ],
+}
+
 export const gameListTableContent = [
   {
     header: 'Name',

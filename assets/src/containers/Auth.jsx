@@ -11,34 +11,16 @@ import { createUserSchema, loginSchema } from '../validationSchemas';
 
 const useUrlQuery = () => new URLSearchParams(useLocation().search);
 
+const toastOptions = { autoClose: 2000, hideProgressBar: true };
+
 function Auth() {
   const { currentUser } = useContext(UserContext);
   const history = useHistory();
   const redirectPath = useUrlQuery().get('redirectFrom');
 
-  const [createUser, { error: createUserError }] = useMutation(
-    CREATE_USER,
-    { refetchQueries: ['User'] },
-  );
-  const [loginUser, { error: loginUserError }] = useMutation(
-    LOGIN_USER,
-    { refetchQueries: ['User'] },
-  );
-
-  const displayErrorIfExists = (error) => {
-    const errorMsg = error?.graphQLErrors[0]?.message;
-    if (errorMsg) {
-      toast(errorMsg, { autoClose: 2000, hideProgressBar: true });
-    }
-  };
-
-  useEffect(() => {
-    displayErrorIfExists(createUserError);
-  }, [createUserError]);
-
-  useEffect(() => {
-    displayErrorIfExists(loginUserError);
-  }, [loginUserError])
+  const mutationOptions = { refetchQueries: ['User'] };
+  const [createUser] = useMutation(CREATE_USER, mutationOptions);
+  const [loginUser] = useMutation(LOGIN_USER, mutationOptions);
 
   useEffect(() => {
     if (currentUser?.isRegistered) {
@@ -46,25 +28,29 @@ function Auth() {
     }
   }, [currentUser]);
 
-  const handleRegisterSubmit = async (
+  const handleErrorToast = ({ graphQLErrors: errors }) => {
+    if (errors[0]?.message) {
+      toast(errors[0]?.message, toastOptions);
+    }
+  }
+
+  const handleRegisterSubmit = (
     { username, email, firstPasswordEntry: password },
     { setSubmitting },
   ) => {
     setSubmitting(false);
-    try {
-      await createUser({ variables: { username, email, password, isRegistered: true } });
-    } catch(_e) {
-      // handle error in hook
-    }
+    createUser({ variables: { username, email, password, isRegistered: true } })
+      .catch((e) => {
+        handleErrorToast(e)
+      });
   };
 
-  const handleLoginSubmit = async ({ username, password }, { setSubmitting }) => {
+  const handleLoginSubmit = ({ username, password }, { setSubmitting }) => {
     setSubmitting(false);
-    try {
-      await loginUser({ variables: { username, password } });
-    } catch(_e) {
-      // handle error in hook
-    }
+    loginUser({ variables: { username, password } })
+      .catch((e) => {
+        handleErrorToast(e)
+      });
   };
 
   return (
@@ -91,5 +77,5 @@ function Auth() {
     </>
   );
 }
- 
+
 export default Auth;

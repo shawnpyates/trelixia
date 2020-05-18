@@ -8,6 +8,10 @@ import {
 } from '@material-ui/core';
 import PropTypes from 'prop-types';
 
+import OptionsPicker from '../Form/OptionsPicker';
+
+import { questionOptionsForm as questionOptionsFormContent } from '../../content';
+
 import {
   ListContainer,
   ListTable,
@@ -26,7 +30,7 @@ function QuestionList({
   setCurrentMode,
   isSetFromCurrentUser,
   temporaryRows,
-  handleTextareaChange,
+  handleRowUpdate,
   addNewRow,
   handleQuestionSubmit,
   deleteQuestion,
@@ -131,14 +135,12 @@ function QuestionList({
                 buttonText: 'Edit',
               }
           );
-          const correspondingQuestion = id && game.questions.find((question) => question.id === id);
-          const isUnchanged = (
-            correspondingQuestion
-            && (
-              correspondingQuestion.questionText === questionText
-              && correspondingQuestion.answer === answer
-            )
-          );
+          const optionsFormInitialValues = {
+            compareThreshold: compareThreshold || game.defaultCompareThreshold,
+            timeAllotment: timeAllotment || game.defaultTimeAllotment,
+            type: type || game.defaultQuestionType,
+            pointValue: pointValue || 1,
+          };
           return (
             <Fragment key={id || key}>
               <TableRow>
@@ -146,8 +148,8 @@ function QuestionList({
                   <StyledTextarea
                     name="questionText"
                     value={questionText || ''}
-                    onChange={(ev) => {
-                      handleTextareaChange(ev, i)
+                    onChange={({ target: { name, value } }) => {
+                      handleRowUpdate({ [name]: value }, i);
                     }}
                     rowsMin={3}
                   />
@@ -156,8 +158,8 @@ function QuestionList({
                   <StyledTextarea
                     name="answer"
                     value={answer || ''}
-                    onChange={(ev) => {
-                      handleTextareaChange(ev, i)
+                    onChange={({ target: { name, value } }) => {
+                      handleRowUpdate({ [name]: value }, i);
                     }}
                     rowsMin={3}
                   />
@@ -166,8 +168,8 @@ function QuestionList({
                   <StyledTextarea
                     name="topic"
                     value={topic || ''}
-                    onChange={(ev) => {
-                      handleTextareaChange(ev, i)
+                    onChange={({ target: { name, value } }) => {
+                      handleRowUpdate({ [name]: value }, i);
                     }}
                     rowsMin={3}
                   />
@@ -191,13 +193,18 @@ function QuestionList({
                     anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
                     transformOrigin={{ vertical: 'top', horizontal: 'center' }}
                   >
-                    <div style={{ height: '300px', width: '300px' }}>Options form upcoming...</div>
+                    <OptionsPicker
+                      fields={questionOptionsFormContent.fields}
+                      initialValues={optionsFormInitialValues}
+                      handleChange={handleRowUpdate}
+                      index={i}
+                    />
                   </Popover>
                 </SideContent>
                 <SideContent>
                   <ListButton
                     createnewitem="true"
-                    disabled={!questionText || !answer || isUnchanged}
+                    disabled={!questionText || !answer}
                     onClick={() => {
                       handleQuestionSubmit({
                         index: i,
@@ -206,9 +213,12 @@ function QuestionList({
                           id,
                           questionText,
                           answer,
-                          timeAllotment: 60,
+                          timeAllotment,
+                          compareThreshold,
+                          type,
+                          topic,
                           gameId: game.id,
-                          pointValue: 1,
+                          pointValue: Number(pointValue),
                         },
                       });
                     }}

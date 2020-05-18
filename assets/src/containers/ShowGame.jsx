@@ -8,6 +8,7 @@ import styled from 'styled-components';
 import { useQuery, useMutation } from '@apollo/react-hooks';
 import { useParams } from 'react-router-dom';
 import shortid from 'shortid';
+import { ToastContainer, toast } from 'react-toastify';
 
 import { GET_GAME, GET_FAVORITE } from '../api/queries';
 import {
@@ -83,8 +84,23 @@ const usePrevious = (value) => {
   return ref.current;
 };
 
+const getToastMessage = (mutationType) => {
+  switch (mutationType) {
+    case 'createQuestion':
+      return 'Successfully created question.';
+    case 'editQuestion':
+      return 'Successfully edited question.';
+    case 'deleteQuestion':
+      return 'Successfully deleted question.';
+    case 'createFavorite':
+      return 'Successfully bookmarked.';
+    case 'deleteFavorite':
+      return 'Successfully removed bookmark.';
+    default:
+      return '';
+  }
+};
 
-// TODO - implement mutations for adding/editing questions
 function ShowGame() {
   const { currentUser } = useContext(UserContext);
   const { id } = useParams();
@@ -113,14 +129,19 @@ function ShowGame() {
     error,
   } = useMultipleQueries();
 
-  const refetchFavorite = { refetchQueries: ['Favorite'] };
-  const [createFavorite] = useMutation(CREATE_FAVORITE, refetchFavorite);
-  const [deleteFavorite] = useMutation(DELETE_FAVORITE, refetchFavorite);
+  const handleMutationComplete = (data) => {
+    toast(getToastMessage(Object.keys(data)[0]), { autoClose: 2000, hideProgressBar: true });
+  }
 
-  const refetchGame = { refetchQueries: ['Game'] };
-  const [createQuestion] = useMutation(CREATE_QUESTION, refetchGame);
-  const [editQuestion] = useMutation(EDIT_QUESTION, refetchGame);
-  const [deleteQuestion] = useMutation(DELETE_QUESTION, refetchGame);
+  const favoriteMutationOptions = { refetchQueries: ['Favorite'], onCompleted: handleMutationComplete };
+  const [createFavorite] = useMutation(CREATE_FAVORITE, favoriteMutationOptions);
+  const [deleteFavorite] = useMutation(DELETE_FAVORITE, favoriteMutationOptions);
+
+  const questionMutationOptions = { refetchQueries: ['Game'], onCompleted: handleMutationComplete };
+  const [createQuestion] = useMutation(CREATE_QUESTION, questionMutationOptions);
+  const [editQuestion] = useMutation(EDIT_QUESTION, questionMutationOptions);
+  const [deleteQuestion] = useMutation(DELETE_QUESTION, questionMutationOptions);
+
 
   const { mutationFn, mutationArgs, bookmarkText } = (
     favoriteData
@@ -170,8 +191,8 @@ function ShowGame() {
     setTemporaryRows([...temporaryRows, getInitialNewRow()]);
   };
 
-  const handleTextareaChange = ({ target: { name, value } }, index) => {
-    const updatedRow = { ...temporaryRows[index], [name]: value };
+  const handleRowUpdate = (newValues, index) => {
+    const updatedRow = { ...temporaryRows[index], ...newValues };
     setTemporaryRows([
       ...temporaryRows.slice(0, index),
       updatedRow,
@@ -224,7 +245,7 @@ function ShowGame() {
         setCurrentMode={setCurrentMode}
         isSetFromCurrentUser={currentUser.id === gameData.ownerId}
         temporaryRows={temporaryRows}
-        handleTextareaChange={handleTextareaChange}
+        handleRowUpdate={handleRowUpdate}
         addNewRow={addNewRow}
         handleQuestionSubmit={handleQuestionSubmit}
         deleteQuestion={deleteQuestion}
@@ -232,6 +253,7 @@ function ShowGame() {
         isLoading={loading}
         questionTypes={questionTypes}
       />
+      <ToastContainer position={toast.POSITION.BOTTOM_RIGHT} />
     </GameContainer>
   );
 }

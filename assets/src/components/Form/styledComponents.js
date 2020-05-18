@@ -66,6 +66,24 @@ export const theme = createMuiTheme({
   },
 });
 
+export const optionPickerTheme = createMuiTheme({
+  palette: {
+    primary: {
+      main: '#000',
+    },
+    secondary: {
+      main: '#000',
+    },
+  },
+  overrides: {
+    MuiFormGroup: {
+      root: {
+        flexDirection: 'unset',
+      },
+    },
+  },
+});
+
 export const FormContainer = styled.div`
   height: 500px;
   width: 500px;
@@ -77,6 +95,12 @@ export const FormContainer = styled.div`
   @media only screen and (max-width: 1040px) {
     left: 10%;
   }
+`;
+
+export const OptionsPickerContainer = styled.div`
+  height: 250px;
+  width: 380px;
+  padding: 20px;
 `;
 
 export const StyledField = styled(Field)`

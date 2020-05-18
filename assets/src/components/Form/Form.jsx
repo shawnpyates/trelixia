@@ -44,6 +44,8 @@ function Form({
                       setFieldValue={setFieldValue}
                       submitForm={submitForm}
                       isSubmitting={isSubmitting}
+                      defaultValue={initialValues[field.name]}
+                      initialValues={initialValues}
                     />
                   </FieldContainer>
                 ))}

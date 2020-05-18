@@ -16,6 +16,8 @@ function RenderFieldByType({
   isSubmitting,
   errors,
   touched,
+  isFromOptionPicker,
+  defaultValue,
 }) {
   switch (field.type) {
     case 'text':
@@ -29,6 +31,7 @@ function RenderFieldByType({
           field={field}
           setFieldValue={setFieldValue}
           values={values}
+          defaultValue={defaultValue}
         />
       );
     case 'dateTimePicker':
@@ -44,6 +47,7 @@ function RenderFieldByType({
         <RadioGroup
           field={field}
           isSubmitting={isSubmitting}
+          isFromOptionPicker={isFromOptionPicker}
         />
       );
     case 'submitButton':
@@ -52,6 +56,7 @@ function RenderFieldByType({
           submitForm={submitForm}
           isSubmitting={isSubmitting}
           buttonText={field.buttonText}
+          defaultValue={defaultValue}
         />
       );
     default:

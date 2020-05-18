@@ -5,7 +5,7 @@ import { Switch } from 'formik-material-ui';
 import PropTypes from 'prop-types';
 
 const displayCurrentValue = (value, decimalPlaces) => (
-  decimalPlaces ? value.toFixed(decimalPlaces) : value
+  decimalPlaces ? value?.toFixed(decimalPlaces) : value
 );
 
 function Slider({
@@ -17,13 +17,13 @@ function Slider({
       name,
       decimalPlaces,
       step,
-      defaultValue,
       min,
       max,
     },
   },
   setFieldValue,
   values,
+  defaultValue,
 }) {
   return (
     <>
