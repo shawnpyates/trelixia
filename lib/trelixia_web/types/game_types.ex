@@ -3,8 +3,8 @@ defmodule TrelixiaWeb.Types.GameTypes do
   import_types(Absinthe.Type.Custom)
 
   enum :question_type do
-    value :first_answer_wins, as: "FIRST_ANSWER_WINS"
-    value :timed, as: "TIMED"
+    value(:first_answer_wins, as: "FIRST_ANSWER_WINS")
+    value(:timed, as: "TIMED")
   end
 
   @desc "Game fields that can be queried"

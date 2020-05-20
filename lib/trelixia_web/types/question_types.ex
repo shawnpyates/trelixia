@@ -19,6 +19,8 @@ defmodule TrelixiaWeb.Types.QuestionTypes do
     field :type, :string
     @desc "The point value of the question"
     field :point_value, :integer
+    @desc "Indicates whether the question has been asked in the game"
+    field :was_asked, :boolean
     @desc "The id of the game in which the question is being played"
     field :game_id, :id
   end

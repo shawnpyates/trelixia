@@ -62,11 +62,13 @@ defmodule Trelixia.Trivia do
   def fetch_games_by_host(user_id) do
     now = DateTime.utc_now()
 
-    query = from(
-      g in Game,
-      where: g.owner_id == ^user_id and g.scheduled_for > ^now,
-      order_by: [desc: g.inserted_at]
-    )
+    query =
+      from(
+        g in Game,
+        where: g.owner_id == ^user_id and g.scheduled_for > ^now,
+        order_by: [desc: g.inserted_at]
+      )
+
     Repo.all(query)
   end
 
@@ -123,6 +125,52 @@ defmodule Trelixia.Trivia do
     game
     |> Game.changeset(attrs)
     |> Repo.update()
+  end
+
+  defp set_game_to_next_question(game, current_question) do
+    case update_question(current_question, %{was_asked: true}) do
+      {:ok, _updated_question} ->
+        question_query =
+          from(q in Question, where: q.game_id == ^game.id and q.was_asked == false, limit: 1)
+
+        case Repo.all(question_query) do
+          [new_question | _rest] ->
+            # move to next question
+            update_game(game, %{current_question_id: new_question.id})
+
+          [] ->
+            # no questions left, so set current_question_id to nil
+            update_game(game, %{current_question_id: nil})
+
+          nil ->
+            {:error, "Question does not exist."}
+        end
+
+      {:error, _error} ->
+        {:error, "Could not update."}
+    end
+  end
+
+  def handle_game_guess(%Game{} = game, guess) do
+    case Repo.get!(Question, game.current_question_id) do
+      nil ->
+        {:error, "Question not found."}
+
+      question ->
+        cond do
+          String.jaro_distance(guess, question.answer) >= question.compare_threshold ->
+            case set_game_to_next_question(game, question) do
+              {:ok, updated_game} ->
+                {:ok, %{current_question_id: updated_game.current_question_id}}
+
+              {:error, error} ->
+                {:error, error}
+            end
+
+          true ->
+            {:ok, %{current_question_id: game.current_question_id}}
+        end
+    end
   end
 
   @doc """

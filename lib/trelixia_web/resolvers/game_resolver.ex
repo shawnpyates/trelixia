@@ -58,4 +58,14 @@ defmodule TrelixiaWeb.Resolvers.GameResolver do
         Trivia.update_game(game, args)
     end
   end
+
+  def handle_game_guess(_, %{id: id, guess: guess}, _) do
+    case Trivia.get_game!(id) do
+      nil ->
+        {:error, "Game ID #{id} not found."}
+
+      game ->
+        Trivia.handle_game_guess(game, guess)
+    end
+  end
 end

@@ -91,6 +91,13 @@ defmodule TrelixiaWeb.Schema do
       resolve(&GameResolver.create_game/3)
     end
 
+    @desc "handle_game_guess"
+    field :handle_game_guess, :game do
+      arg(:id, non_null(:id))
+      arg(:guess, non_null(:string))
+      resolve(&GameResolver.handle_game_guess/3)
+    end
+
     @desc "create_question"
     field :create_question, :question do
       arg(:question_text, non_null(:string))

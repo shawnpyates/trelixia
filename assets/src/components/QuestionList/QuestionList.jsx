@@ -28,7 +28,6 @@ function QuestionList({
   questionSetModes,
   currentMode,
   setCurrentMode,
-  isSetFromCurrentUser,
   temporaryRows,
   handleRowUpdate,
   addNewRow,
@@ -267,14 +266,9 @@ function QuestionList({
         {((game.questions && game.questions.length)
         && (
           <>
-            {isSetFromCurrentUser
-            && (
-              <>
-                {getButton(questionSetModes.ADD, 'Add More Questions')}
-                {getButton(questionSetModes.VIEW, 'View Questions')}
-                {getButton(questionSetModes.EDIT, 'Edit Questions')}
-              </>
-            )}
+            {getButton(questionSetModes.ADD, 'Add More Questions')}
+            {getButton(questionSetModes.VIEW, 'View Questions')}
+            {getButton(questionSetModes.EDIT, 'Edit Questions')}
           </>
         )) || ''}
       </div>
@@ -290,7 +284,6 @@ function QuestionList({
 }
 
 QuestionList.defaultProps = {
-  isSetFromCurrentUser: false,
   temporaryRows: null,
   game: null,
 };
@@ -298,7 +291,6 @@ QuestionList.defaultProps = {
 QuestionList.propTypes = {
   questionSetModes: PropTypes.objectOf(PropTypes.string).isRequired,
   currentMode: PropTypes.string.isRequired,
-  isSetFromCurrentUser: PropTypes.bool,
   temporaryRows: PropTypes.arrayOf(PropTypes.object),
   handleTextareaChange: PropTypes.func.isRequired,
   addNewRow: PropTypes.func.isRequired,

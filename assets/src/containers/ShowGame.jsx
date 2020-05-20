@@ -133,11 +133,17 @@ function ShowGame() {
     toast(getToastMessage(Object.keys(data)[0]), { autoClose: 2000, hideProgressBar: true });
   }
 
-  const favoriteMutationOptions = { refetchQueries: ['Favorite'], onCompleted: handleMutationComplete };
+  const favoriteMutationOptions = {
+    refetchQueries: ['Favorite'],
+    onCompleted: handleMutationComplete,
+  };
   const [createFavorite] = useMutation(CREATE_FAVORITE, favoriteMutationOptions);
   const [deleteFavorite] = useMutation(DELETE_FAVORITE, favoriteMutationOptions);
 
-  const questionMutationOptions = { refetchQueries: ['Game'], onCompleted: handleMutationComplete };
+  const questionMutationOptions = {
+    refetchQueries: ['Game'],
+    onCompleted: handleMutationComplete,
+  };
   const [createQuestion] = useMutation(CREATE_QUESTION, questionMutationOptions);
   const [editQuestion] = useMutation(EDIT_QUESTION, questionMutationOptions);
   const [deleteQuestion] = useMutation(DELETE_QUESTION, questionMutationOptions);
@@ -225,35 +231,45 @@ function ShowGame() {
     name,
     questions,
     scheduledFor,
+    ownerId,
     user: owner,
   } = gameData || {};
+  const isCurrentUserAlsoOwner = ownerId === currentUser.id;
+  debugger;
   return (
     <GameContainer>
       <Title>{name}</Title>
-      <Bookmark onClick={handleBookmarkClick}>
-        <BookmarkText>{bookmarkText}</BookmarkText><i className="far fa-bookmark"></i>
-      </Bookmark>
+      {!isCurrentUserAlsoOwner
+      && (
+        <Bookmark onClick={handleBookmarkClick}>
+          <BookmarkText>{bookmarkText}</BookmarkText><i className="far fa-bookmark"></i>
+        </Bookmark>
+      )}
       <div>
         <Detail>Host: {owner.username}</Detail>
         <Detail>Scheduled for: {formatDate(scheduledFor)}</Detail>
         <Detail>Category: {category}</Detail>
         <Detail>Number of Questions (subject to change): {questions.length}</Detail>
       </div>
-      <QuestionList
-        questionSetModes={questionSetModes}
-        currentMode={currentMode}
-        setCurrentMode={setCurrentMode}
-        isSetFromCurrentUser={currentUser.id === gameData.ownerId}
-        temporaryRows={temporaryRows}
-        handleRowUpdate={handleRowUpdate}
-        addNewRow={addNewRow}
-        handleQuestionSubmit={handleQuestionSubmit}
-        deleteQuestion={deleteQuestion}
-        game={gameData}
-        isLoading={loading}
-        questionTypes={questionTypes}
-      />
-      <ToastContainer position={toast.POSITION.BOTTOM_RIGHT} />
+      {isCurrentUserAlsoOwner
+      && (
+        <>
+          <QuestionList
+            questionSetModes={questionSetModes}
+            currentMode={currentMode}
+            setCurrentMode={setCurrentMode}
+            temporaryRows={temporaryRows}
+            handleRowUpdate={handleRowUpdate}
+            addNewRow={addNewRow}
+            handleQuestionSubmit={handleQuestionSubmit}
+            deleteQuestion={deleteQuestion}
+            game={gameData}
+            isLoading={loading}
+            questionTypes={questionTypes}
+          />
+          <ToastContainer position={toast.POSITION.BOTTOM_RIGHT} />
+        </>
+      )}
     </GameContainer>
   );
 }
