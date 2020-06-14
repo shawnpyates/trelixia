@@ -7,6 +7,7 @@ defmodule Trelixia.Trivia do
   alias Trelixia.Repo
 
   alias Trelixia.Trivia.{Game, Question, Favorite}
+  alias Trelixia.Account
 
   @doc """
   Returns the list of games.
@@ -151,7 +152,7 @@ defmodule Trelixia.Trivia do
     end
   end
 
-  def handle_game_guess(%Game{} = game, guess) do
+  def handle_game_guess(%Game{} = game, guess, user_id) do
     case Repo.get!(Question, game.current_question_id) do
       nil ->
         {:error, "Question not found."}
@@ -159,9 +160,15 @@ defmodule Trelixia.Trivia do
       question ->
         cond do
           String.jaro_distance(guess, question.answer) >= question.compare_threshold ->
-            case set_game_to_next_question(game, question) do
-              {:ok, updated_game} ->
-                {:ok, %{current_question_id: updated_game.current_question_id}}
+            case Account.assign_points_to_user(user_id, question.point_value) do
+              {:ok, _user} ->
+                case set_game_to_next_question(game, question) do
+                  {:ok, updated_game} ->
+                    {:ok, %{current_question_id: updated_game.current_question_id}}
+
+                  {:error, error} ->
+                    {:error, error}
+                end
 
               {:error, error} ->
                 {:error, error}

@@ -2,8 +2,8 @@ defmodule Trelixia.Trivia.Question do
   use Ecto.Schema
   import Ecto.Changeset
 
-  @optional_fields ~w(topic type compare_threshold)a
-  @required_fields ~w(question_text answer time_allotment point_value was_asked game_id)a
+  @optional_fields ~w(topic type compare_threshold was_asked)a
+  @required_fields ~w(question_text answer time_allotment point_value game_id)a
 
   schema "questions" do
     field :answer, :string
@@ -13,7 +13,7 @@ defmodule Trelixia.Trivia.Question do
     field :topic, :string
     field :type, :string
     field :point_value, :integer
-    field :was_asked, :boolean
+    field :was_asked, :boolean, default: false
 
     belongs_to :game, Trelixia.Trivia.Game
 

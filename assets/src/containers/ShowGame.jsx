@@ -74,7 +74,19 @@ const BookmarkText = styled.p`
   display: inline;
 `;
 
-const getInitialNewRow = () => ({ questionText: null, answer: null, shortid: shortid.generate() });
+const getInitialNewRow = ({
+  defaultCompareThreshold,
+  defaultQuestionType,
+  defaultTimeAllotment,
+}) => ({
+  questionText: null,
+  answer: null,
+  timeAllotment: defaultTimeAllotment,
+  compareThreshold: defaultCompareThreshold,
+  type: defaultQuestionType,
+  pointValue: 1,
+  shortid: shortid.generate(),
+});
 
 const usePrevious = (value) => {
   const ref = useRef();
@@ -181,7 +193,7 @@ function ShowGame() {
       return;
     }
     if (currentMode === questionSetModes.ADD) {
-      setTemporaryRows([getInitialNewRow()]);
+      setTemporaryRows([getInitialNewRow(gameData)]);
       return;
     }
     if (currentMode === questionSetModes.EDIT) {
@@ -194,7 +206,7 @@ function ShowGame() {
   }, [currentMode, previousMode, gameData?.questions]);
 
   const addNewRow = () => {
-    setTemporaryRows([...temporaryRows, getInitialNewRow()]);
+    setTemporaryRows([...temporaryRows, getInitialNewRow(gameData)]);
   };
 
   const handleRowUpdate = (newValues, index) => {
@@ -217,7 +229,7 @@ function ShowGame() {
       setTemporaryRows(
         temporaryRows.length > 1
           ? [...temporaryRows.slice(0, index),...temporaryRows.slice(index + 1)]
-          : [getInitialNewRow()]
+          : [getInitialNewRow(gameData)]
       );
     }
   };

@@ -125,7 +125,6 @@ export const createGameForm = {
     shouldScheduleTime: false,
     scheduledFor: null,
     isAutomated: false,
-    ownerId: 11,
     defaultTimeAllotment: 30,
     defaultQuestionType: 'FIRST_ANSWER_WINS',
   },

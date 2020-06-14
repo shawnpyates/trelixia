@@ -17,7 +17,7 @@ function RenderFieldByType({
   errors,
   touched,
   isFromOptionPicker,
-  defaultValue,
+  initialValues,
 }) {
   switch (field.type) {
     case 'text':
@@ -31,7 +31,7 @@ function RenderFieldByType({
           field={field}
           setFieldValue={setFieldValue}
           values={values}
-          defaultValue={defaultValue}
+          defaultValue={initialValues[field.slider.name]}
         />
       );
     case 'dateTimePicker':
@@ -56,7 +56,7 @@ function RenderFieldByType({
           submitForm={submitForm}
           isSubmitting={isSubmitting}
           buttonText={field.buttonText}
-          defaultValue={defaultValue}
+          defaultValue={initialValues[field.name]}
         />
       );
     default:

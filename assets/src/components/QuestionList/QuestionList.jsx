@@ -209,7 +209,6 @@ function QuestionList({
                         index: i,
                         shouldRemoveTempRow: shouldRemoveTempRowOnSubmit,
                         variables: {
-                          id,
                           questionText,
                           answer,
                           timeAllotment,

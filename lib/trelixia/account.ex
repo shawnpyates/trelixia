@@ -74,7 +74,7 @@ defmodule Trelixia.Account do
 
       user ->
         case Bcrypt.check_pass(user, password, hash_key: :password) do
-          {:ok, authenticated_user} -> authenticated_user
+          {:ok, authenticated_user} -> {:ok, authenticated_user}
           {:error, _reason} -> {:error, @invalid_password_error_message}
         end
     end
@@ -139,6 +139,18 @@ defmodule Trelixia.Account do
         Repo.insert(changeset)
 
       user ->
+        {:ok, user}
+    end
+  end
+
+  def assign_points_to_user(user_id, point_value) do
+    case get_user!(user_id) do
+      nil ->
+        {:error, @user_not_found_error_message}
+
+      user ->
+        updated_score = user.current_score + point_value
+        update_user(user, %{current_score: updated_score})
         {:ok, user}
     end
   end
