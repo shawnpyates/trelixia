@@ -36,7 +36,6 @@ const AppContainer = styled.div`
   width: 100vw;
 `;
 
-
 function App() {
   const { root } = useStyles();
   const { loading, error, data } = useQuery(GET_CURRENT_USER);
@@ -46,9 +45,9 @@ function App() {
       <AppContainer>
         <div className={root}>
           <Router>
-            <UserProvider currentUser={data && data.user} isUserLoading={loading}>
-              <NavBar />
-              <DrawerComponent />
+            <UserProvider currentUser={data?.user} isUserLoading={loading}>
+              <NavBar currentUser={data?.user} isUserLoading={loading} />
+              <DrawerComponent currentUser={data?.user} />
               <Switch>
                 <Route path="/" exact>
                   <div>Hello</div>

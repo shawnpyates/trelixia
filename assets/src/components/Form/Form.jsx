@@ -32,6 +32,8 @@ function Form({
               values,
               errors,
               touched,
+              dirty,
+              isValid
             }) => (
               <FormikForm>
                 {fields.map((field) => (
@@ -45,6 +47,8 @@ function Form({
                       submitForm={submitForm}
                       isSubmitting={isSubmitting}
                       initialValues={initialValues}
+                      dirty={dirty}
+                      isValid={isValid}
                     />
                   </FieldContainer>
                 ))}

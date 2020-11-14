@@ -29,10 +29,8 @@ import {
 } from './styledComponents';
 
 const AUTH_URL = "http://localhost:4003/auth";
-const currentUser = null;
-const isUserLoading = false;
 
-function NavBar() {
+function NavBar({ currentUser, isUserLoading }) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const anchorRef = useRef(null);
   const history = useHistory();
@@ -56,6 +54,8 @@ function NavBar() {
     }
   };
 
+  console.log('current user? ', currentUser);
+
   const wasPreviouslyOpen = useRef(isMenuOpen);
 
   useEffect(() => {
@@ -67,7 +67,7 @@ function NavBar() {
   }, [isMenuOpen]);
 
   const buttons = (
-    currentUser
+    currentUser?.isRegistered
       ? [{ endpoint: '/signout', content: 'Sign Out' }]
       : [{
         endpoint: '/google',

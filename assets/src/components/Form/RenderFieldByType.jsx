@@ -18,6 +18,8 @@ function RenderFieldByType({
   touched,
   isFromOptionPicker,
   initialValues,
+  dirty,
+  isValid,
 }) {
   switch (field.type) {
     case 'text':
@@ -57,6 +59,7 @@ function RenderFieldByType({
           isSubmitting={isSubmitting}
           buttonText={field.buttonText}
           defaultValue={initialValues[field.name]}
+          disabled={!dirty || !isValid}
         />
       );
     default:
@@ -70,6 +73,8 @@ RenderFieldByType.propTypes = {
   setFieldValue: PropTypes.func.isRequired,
   submitForm: PropTypes.func.isRequired,
   isSubmitting: PropTypes.bool.isRequired,
+  dirty: PropTypes.bool.isRequired,
+  isValid: PropTypes.bool.isRequired,
 };
 
 export default RenderFieldByType;

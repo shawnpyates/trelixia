@@ -39,9 +39,9 @@ function QuestionList({
 }) {
   const [popoverEl, setPopoverEl] = useState(null);
 
-  const handleOptionsClick = (event) => {
-    setPopoverEl(event.currentTarget);
-  }
+  const handleOptionsOpen = ({ currentTarget: { id } }) => {
+    setPopoverEl(id);
+  };
 
   const handleOptionsClose = () => {
     setPopoverEl(null);
@@ -53,7 +53,7 @@ function QuestionList({
     type,
     pointValue,
   }) => (
-    <Fragment>
+    <>
       {game.isAutomated
       && (
         <p>Required Match Score: {compareThreshold || game.defaultCompareThreshold}</p>
@@ -61,7 +61,7 @@ function QuestionList({
       <p>Time Allowed (s): {timeAllotment || game.defaultTimeAllotment}</p>
       <p>Type: {questionTypes[type]?.label || questionTypes[game.defaultQuestionType]?.label}</p>
       <p>Point Value: {pointValue || 1}</p>
-    </Fragment>
+    </>
   );
 
   const renderQuestions = (questions) => (
@@ -119,6 +119,8 @@ function QuestionList({
           shortid: key,
           id,
         }, i) => {
+          const refId = id || key;
+          const isActiveRow = refId === popoverEl;
           const isLast = i === temporaryRows.length - 1;
           const {
             buttonText,
@@ -134,14 +136,9 @@ function QuestionList({
                 buttonText: 'Edit',
               }
           );
-          const optionsFormInitialValues = {
-            compareThreshold: compareThreshold || game.defaultCompareThreshold,
-            timeAllotment: timeAllotment || game.defaultTimeAllotment,
-            type: type || game.defaultQuestionType,
-            pointValue: pointValue || 1,
-          };
+          const optionsFormInitialValues = game.questions.find((question) => question.id === id) || { ...game, pointValue: 1 };
           return (
-            <Fragment key={id || key}>
+            <Fragment key={refId}>
               <TableRow>
                 <ContentTableCell columnlength={3} islast={String(isLast || '')}>
                   <StyledTextarea
@@ -179,24 +176,29 @@ function QuestionList({
                   >
                     <ListButton
                       aria-describedby={popoverEl && 'options-popover'}
-                      onClick={handleOptionsClick}
+                      value={refId}
+                      id={refId}
+                      onClick={handleOptionsOpen}
                     >
                       Other Options
                     </ListButton>
                   </Tooltip>
                   <Popover
-                    id={'options-popover'}
-                    open={Boolean(popoverEl)}
+                    id={refId}
+                    open={Boolean(popoverEl) && isActiveRow}
                     anchorEl={popoverEl}
                     onClose={handleOptionsClose}
+                    value={refId}
                     anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
                     transformOrigin={{ vertical: 'top', horizontal: 'center' }}
                   >
                     <OptionsPicker
                       fields={questionOptionsFormContent.fields}
                       initialValues={optionsFormInitialValues}
+                      currentValues={temporaryRows[i]}
                       handleChange={handleRowUpdate}
                       index={i}
+                      row={temporaryRows[i]}
                     />
                   </Popover>
                 </SideContent>
@@ -209,6 +211,7 @@ function QuestionList({
                         index: i,
                         shouldRemoveTempRow: shouldRemoveTempRowOnSubmit,
                         variables: {
+                          id,
                           questionText,
                           answer,
                           timeAllotment,

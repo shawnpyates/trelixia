@@ -10,13 +10,9 @@ import RenderFieldByType from './RenderFieldByType';
 const isInvalidIntValue = (n) => !(n > 0 && n <= 10000) || !Number.isInteger(n);
 
 const PickerContext = ({ handleChange, index }) => {
-  const { values } = useFormikContext();
+  const { values: { pointValue, ...rest } } = useFormikContext();
   useEffect(() => {
-    const clonedVals = { ...values };
-    if (isInvalidIntValue(Number(clonedVals.pointValue))) {
-      delete clonedVals.pointValue;
-    }
-    handleChange(clonedVals, index);
+    handleChange(isInvalidIntValue(Number(pointValue)) ? rest : values, index);
   }, [values])
   return null;
 };
@@ -24,13 +20,14 @@ const PickerContext = ({ handleChange, index }) => {
 function OptionsPicker({
   fields,
   initialValues,
+  currentValues,
   handleChange,
   index,
 }) {
   return (
     <OptionsPickerContainer>
       <ThemeProvider theme={optionPickerTheme}>
-        <Formik initialValues={initialValues}>
+        <Formik initialValues={currentValues || initialValues}>
           {({
             setFieldValue,
             values,

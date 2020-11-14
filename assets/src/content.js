@@ -24,14 +24,17 @@ export const menuItems = [
   {
     text: 'Create New Game',
     link: '/createGame',
+    requiresCurrentUser: true,
   },
   {
     text: 'Games I\'m Hosting',
     link: '/games?hosting=true',
+    requiresCurrentUser: true,
   },
   {
     text: 'My Bookmarked Games',
     link: '/games?bookmarked=true',
+    requiresCurrentUser: true,
   },
   ...getCategoryMenuItems(),
 ];

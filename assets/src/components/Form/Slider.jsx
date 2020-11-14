@@ -44,6 +44,7 @@ function Slider({
             name={name}
             step={step}
             defaultValue={defaultValue}
+            value={values[name]}
             aria-labelledby={id}
             min={min}
             max={max}

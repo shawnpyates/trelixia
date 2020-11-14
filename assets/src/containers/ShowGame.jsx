@@ -247,7 +247,6 @@ function ShowGame() {
     user: owner,
   } = gameData || {};
   const isCurrentUserAlsoOwner = ownerId === currentUser.id;
-  debugger;
   return (
     <GameContainer>
       <Title>{name}</Title>

@@ -3,13 +3,14 @@ import PropTypes from 'prop-types';
 
 import { StyledButton } from './styledComponents';
 
-function TextField({ submitForm, isSubmitting, buttonText }) {
+function TextField({ submitForm, isSubmitting, buttonText, disabled }) {
   return (
     <StyledButton
       variant="contained"
       color="primary"
       onClick={submitForm}
-      disabled={isSubmitting}
+      disabled={isSubmitting || disabled}
+      pageEnd="true"
     >
       {buttonText}
     </StyledButton>

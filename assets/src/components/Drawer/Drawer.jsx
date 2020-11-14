@@ -1,6 +1,4 @@
 import React from 'react';
-// import { ListItem, ListItemText } from '@material-ui/core';
-import { makeStyles } from '@material-ui/core/styles';
 import { Link } from 'react-router-dom';
 
 import {
@@ -13,24 +11,15 @@ import {
 
 import { menuItems } from '../../content';
 
-const useStyles = makeStyles((theme) => ({
-  root: {
-    display: 'flex',
-  },
-  toolbar: theme.mixins.toolbar,
-}));
-
-function DrawerComponent() {
-  const { drawer, toolbar } = useStyles();
+function DrawerComponent({ currentUser }) {
   return (
-    <StyledDrawer className={drawer} variant="permanent" anchor="left">
-      <div className={toolbar} />
+    <StyledDrawer variant="permanent" anchor="left">
       <StyledList>
         <StyledListItem button>
           <MenuTitle>Trelixia</MenuTitle>
         </StyledListItem>
         {menuItems.map(({ text, link, requiresCurrentUser }) => (
-          !requiresCurrentUser
+          (!requiresCurrentUser || currentUser?.isRegistered)
           && (
             <Link to={link} key={text}>
               <StyledListItem button>

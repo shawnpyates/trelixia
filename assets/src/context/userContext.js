@@ -14,10 +14,10 @@ const renderChildren = ({
   if (isUserLoading) {
     return <div>Loading...</div>;
   }
-  if (!currentUser.isRegistered && pathsRequiringAuth.includes(pathname)) {
+  if (!currentUser?.isRegistered && pathsRequiringAuth.includes(pathname)) {
     return <Redirect to={`/auth?redirectFrom=${pathname.slice(1)}`} />;
   }
-  if (currentUser.isRegistered && !currentUser.username && pathname !== USERNAME_PATH) {
+  if (currentUser?.isRegistered && !currentUser?.username && pathname !== USERNAME_PATH) {
     return <Redirect to={USERNAME_PATH} />;
   }
   return children;

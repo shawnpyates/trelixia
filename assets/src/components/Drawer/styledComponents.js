@@ -4,7 +4,7 @@ import {
 import styled from 'styled-components';
 
 export const StyledDrawer = styled(Drawer)`
-  @media only screen and (max-width: 1040px) {
+  @media only screen and (max-width: 767px) {
     visibility: collapse;
   }
 
@@ -21,7 +21,6 @@ export const MenuTitle = styled.h4`
 `;
 
 export const StyledList = styled(List)`
-  margin-top: -75px;
   padding-top: 0;
 `;
 

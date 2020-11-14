@@ -87,14 +87,6 @@ export const optionPickerTheme = createMuiTheme({
 export const FormContainer = styled.div`
   height: 500px;
   width: 500px;
-  position: absolute;
-  top: 100px;
-  left: 50%;
-  transform: translateX(-50%);
-
-  @media only screen and (max-width: 1040px) {
-    left: 10%;
-  }
 `;
 
 export const OptionsPickerContainer = styled.div`
@@ -110,6 +102,8 @@ export const StyledField = styled(Field)`
 
 export const StyledButton = styled(Button)`
   margin-top: 35px;
+  ${({ pageEnd }) => pageEnd ? 'margin-bottom: 100px;' : ''}
+  ${({ disabled }) => disabled ? 'background-color: #CCC' : ''}
 `;
 
 export const StyledInputLabel = styled(InputLabel)`
