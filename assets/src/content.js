@@ -170,7 +170,7 @@ export const createGameForm = {
           label: 'Timed',
           description: 'The question round lasts the full duration of the specified time allowance, and every user who submits a correct answer in time wins the point(s).',
         },
-      ]
+      ],
     },
     {
       type: 'slider',
@@ -267,7 +267,7 @@ export const questionOptionsForm = {
           label: 'Timed',
           description: 'The question round lasts the full duration of the specified time allowance, and every user who submits a correct answer in time wins the point(s).',
         },
-      ]
+      ],
     },
     {
       type: 'text',
@@ -276,7 +276,7 @@ export const questionOptionsForm = {
       defaultValue: 1,
     },
   ],
-}
+};
 
 export const gameListTableContent = [
   {
@@ -293,3 +293,20 @@ export const gameListTableContent = [
     isTimestamp: true,
   },
 ];
+
+export const questionSetModes = {
+  VIEW: 'view',
+  ADD: 'add',
+  EDIT: 'edit',
+};
+
+export const questionTypes = {
+  FIRST_ANSWER_WINS: {
+    value: 'FIRST_ANSWER_WINS',
+    label: 'First Answer Wins',
+  },
+  TIMED: {
+    value: 'TIMED',
+    label: 'Timed',
+  },
+};

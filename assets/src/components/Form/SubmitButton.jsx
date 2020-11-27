@@ -3,7 +3,12 @@ import PropTypes from 'prop-types';
 
 import { StyledButton } from './styledComponents';
 
-function TextField({ submitForm, isSubmitting, buttonText, disabled }) {
+function SubmitButton({
+  submitForm,
+  isSubmitting,
+  buttonText,
+  disabled,
+}) {
   return (
     <StyledButton
       variant="contained"
@@ -17,10 +22,11 @@ function TextField({ submitForm, isSubmitting, buttonText, disabled }) {
   );
 }
 
-TextField.propTypes = {
+SubmitButton.propTypes = {
   submitForm: PropTypes.func.isRequired,
   isSubmitting: PropTypes.bool.isRequired,
   buttonText: PropTypes.string.isRequired,
+  disabled: PropTypes.bool.isRequired,
 };
 
-export default TextField;
+export default SubmitButton;

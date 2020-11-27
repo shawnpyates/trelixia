@@ -42,22 +42,26 @@ function Auth() {
     if (currentUser?.isRegistered) {
       history.push(`/${redirectPath}`);
     }
-  }, [currentUser]);
+  }, [currentUser, history, redirectPath]);
 
   const handleErrorToast = ({ graphQLErrors: errors }) => {
     if (errors[0]?.message) {
       toast(errors[0]?.message, toastOptions);
     }
-  }
+  };
 
   const handleRegisterSubmit = (
     { username, email, firstPasswordEntry: password },
     { setSubmitting },
   ) => {
     setSubmitting(false);
-    createUser({ variables: { username, email, password, isRegistered: true } })
+    createUser({
+      variables: {
+        username, email, password, isRegistered: true,
+      },
+    })
       .catch((e) => {
-        handleErrorToast(e)
+        handleErrorToast(e);
       });
   };
 
@@ -65,7 +69,7 @@ function Auth() {
     setSubmitting(false);
     loginUser({ variables: { username, password } })
       .catch((e) => {
-        handleErrorToast(e)
+        handleErrorToast(e);
       });
   };
 

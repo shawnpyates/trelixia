@@ -38,7 +38,7 @@ const AppContainer = styled.div`
 
 function App() {
   const { root } = useStyles();
-  const { loading, error, data } = useQuery(GET_CURRENT_USER);
+  const { loading, data } = useQuery(GET_CURRENT_USER);
 
   return (
     <div>

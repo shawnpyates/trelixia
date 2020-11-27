@@ -3,7 +3,7 @@ import {
   TableBody,
   TableHead,
 } from '@material-ui/core';
-import InfiniteScroll from 'react-infinite-scroll-component';
+// import InfiniteScroll from 'react-infinite-scroll-component';
 import PropTypes from 'prop-types';
 import { useHistory } from 'react-router-dom';
 
@@ -11,9 +11,9 @@ import {
   StyledTable,
   ListContainer,
   ListRow,
-  ListButton,
-  NewItemContainer,
-  StyledTextField,
+  // ListButton,
+  // NewItemContainer,
+  // StyledTextField,
   HeadTableCell,
   ContentTableCell,
   EmptyDataIndicator,
@@ -89,28 +89,29 @@ function List({
 }
 
 List.defaultProps = {
-  nextPaginationId: null,
-  currentInput: null,
-  fetchMore: null,
-  initActionButtonText: null,
-  isCreating: false,
+  // nextPaginationId: null,
+  // currentInput: null,
+  // fetchMore: null,
+  // initActionButtonText: null,
+  // isCreating: false,
   items: null,
 };
+
 List.propTypes = {
   title: PropTypes.string.isRequired,
   type: PropTypes.string.isRequired,
   items: PropTypes.arrayOf(PropTypes.object),
   contentConfig: PropTypes.arrayOf(PropTypes.object).isRequired,
-  isCreating: PropTypes.bool,
+  // isCreating: PropTypes.bool,
   isLoading: PropTypes.bool.isRequired,
-  fetchMore: PropTypes.func,
-  nextPaginationId: PropTypes.string,
-  currentInput: PropTypes.string,
-  updateInput: PropTypes.func.isRequired,
-  submitInput: PropTypes.func.isRequired,
-  initActionButtonText: PropTypes.string,
-  submitInputButtonText: PropTypes.string.isRequired,
-  inputLabel: PropTypes.string.isRequired,
+  // fetchMore: PropTypes.func,
+  // nextPaginationId: PropTypes.string,
+  // currentInput: PropTypes.string,
+  // updateInput: PropTypes.func.isRequired,
+  // submitInput: PropTypes.func.isRequired,
+  // initActionButtonText: PropTypes.string,
+  // submitInputButtonText: PropTypes.string.isRequired,
+  // inputLabel: PropTypes.string.isRequired,
   emptyDataMessage: PropTypes.string.isRequired,
 };
 export default List;

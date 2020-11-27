@@ -21,7 +21,7 @@ function Select({ field: { name, label, options }, errors, touched }) {
         }}
       >
         {options.map((option) => (
-          <MenuItem value={option}>{capitalize(option)}</MenuItem>
+          <MenuItem value={option} key={option}>{capitalize(option)}</MenuItem>
         ))}
       </StyledField>
       {(errors[name] && touched[name])
@@ -32,8 +32,15 @@ function Select({ field: { name, label, options }, errors, touched }) {
   );
 }
 
+Select.defaultProps = {
+  errors: null,
+  touched: false,
+};
+
 Select.propTypes = {
   field: PropTypes.objectOf(PropTypes.any).isRequired,
+  errors: PropTypes.arrayOf(PropTypes.any),
+  touched: PropTypes.bool,
 };
 
 export default Select;

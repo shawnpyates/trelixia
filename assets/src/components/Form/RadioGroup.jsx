@@ -1,6 +1,8 @@
-import React, { Fragment } from 'react';
+import React from 'react';
 import { Field } from 'formik';
-import { FormControlLabel, Radio, Typography, Tooltip } from '@material-ui/core';
+import {
+  FormControlLabel, Radio, Typography, Tooltip,
+} from '@material-ui/core';
 import { RadioGroup as FmuiRadioGroup } from 'formik-material-ui';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
@@ -29,9 +31,7 @@ function RadioGroup({
   isFromOptionPicker,
 }) {
   const getTooltipHtml = (title) => (
-    <Fragment>
-      <TooltipText>{title}</TooltipText>
-    </Fragment>
+    <TooltipText>{title}</TooltipText>
   );
 
   return (
@@ -41,17 +41,17 @@ function RadioGroup({
       </Typography>
       <Field component={FmuiRadioGroup} name={name}>
         {options.map((option) => (
-          <OptionContainer fromoptionpicker={isFromOptionPicker ? 'true' : ''}>
-          <FormControlLabel
-            value={option.value}
-            control={<Radio disabled={isSubmitting} />}
-            label={option.label}
-            disabled={isSubmitting}
-          />
-          {option.description
+          <OptionContainer key={option.value} fromoptionpicker={isFromOptionPicker ? 'true' : ''}>
+            <FormControlLabel
+              value={option.value}
+              control={<Radio disabled={isSubmitting} />}
+              label={option.label}
+              disabled={isSubmitting}
+            />
+            {option.description
           && (
             <Tooltip title={getTooltipHtml(option.description)}>
-              <StyledIconSpan><i className="far fa-question-circle"></i></StyledIconSpan>
+              <StyledIconSpan><i className="far fa-question-circle" /></StyledIconSpan>
             </Tooltip>
           )}
           </OptionContainer>
@@ -61,9 +61,14 @@ function RadioGroup({
   );
 }
 
+RadioGroup.defaultProps = {
+  isFromOptionPicker: false,
+};
+
 RadioGroup.propTypes = {
   field: PropTypes.objectOf(PropTypes.any).isRequired,
   isSubmitting: PropTypes.bool.isRequired,
+  isFromOptionPicker: PropTypes.bool,
 };
 
 export default RadioGroup;

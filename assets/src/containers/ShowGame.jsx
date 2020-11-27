@@ -3,6 +3,7 @@ import React, {
   useEffect,
   useRef,
   useState,
+  useCallback,
 } from 'react';
 import styled from 'styled-components';
 import { useQuery, useMutation } from '@apollo/react-hooks';
@@ -21,23 +22,8 @@ import {
 import { formatDate } from '../utils';
 import { UserContext } from '../context/userContext';
 import QuestionList from '../components/QuestionList/QuestionList';
+import { questionSetModes, questionTypes } from '../content';
 
-const questionSetModes = {
-  VIEW: 'view',
-  ADD: 'add',
-  EDIT: 'edit',
-};
-
-const questionTypes = {
-  FIRST_ANSWER_WINS: {
-    value: 'FIRST_ANSWER_WINS',
-    label: 'First Answer Wins',
-  },
-  TIMED: {
-    value: 'TIMED',
-    label: 'Timed'
-  }
-};
 
 const GameContainer = styled.div`
   height: 500px;
@@ -143,7 +129,7 @@ function ShowGame() {
 
   const handleMutationComplete = (data) => {
     toast(getToastMessage(Object.keys(data)[0]), { autoClose: 2000, hideProgressBar: true });
-  }
+  };
 
   const favoriteMutationOptions = {
     refetchQueries: ['Favorite'],
@@ -172,7 +158,7 @@ function ShowGame() {
         mutationArgs: { userId: currentUser.id, gameId: id },
         bookmarkText: 'Bookmark',
       }
-  )
+  );
 
   const handleBookmarkClick = () => {
     mutationFn({ variables: mutationArgs });
@@ -186,7 +172,7 @@ function ShowGame() {
     ) {
       setCurrentMode(questionSetModes.ADD);
     }
-  }, [gameData?.questions]);
+  }, [currentMode, gameData]);
 
   useEffect(() => {
     if (currentMode === previousMode) {
@@ -203,20 +189,20 @@ function ShowGame() {
     if ([questionSetModes.ADD, questionSetModes.EDIT].includes(previousMode)) {
       setTemporaryRows(null);
     }
-  }, [currentMode, previousMode, gameData?.questions]);
+  }, [currentMode, gameData, previousMode]);
 
   const addNewRow = () => {
     setTemporaryRows([...temporaryRows, getInitialNewRow(gameData)]);
   };
 
-  const handleRowUpdate = (newValues, index) => {
+  const handleRowUpdate = useCallback((newValues, index) => {
     const updatedRow = { ...temporaryRows[index], ...newValues };
     setTemporaryRows([
       ...temporaryRows.slice(0, index),
       updatedRow,
       ...temporaryRows.slice(index + 1),
     ]);
-  };
+  }, [temporaryRows]);
 
   const handleQuestionSubmit = ({
     index,
@@ -228,8 +214,8 @@ function ShowGame() {
     if (shouldRemoveTempRow) {
       setTemporaryRows(
         temporaryRows.length > 1
-          ? [...temporaryRows.slice(0, index),...temporaryRows.slice(index + 1)]
-          : [getInitialNewRow(gameData)]
+          ? [...temporaryRows.slice(0, index), ...temporaryRows.slice(index + 1)]
+          : [getInitialNewRow(gameData)],
       );
     }
   };
@@ -247,20 +233,30 @@ function ShowGame() {
     user: owner,
   } = gameData || {};
   const isCurrentUserAlsoOwner = ownerId === currentUser.id;
+
   return (
     <GameContainer>
       <Title>{name}</Title>
       {!isCurrentUserAlsoOwner
       && (
         <Bookmark onClick={handleBookmarkClick}>
-          <BookmarkText>{bookmarkText}</BookmarkText><i className="far fa-bookmark"></i>
+          <BookmarkText>{bookmarkText}</BookmarkText>
+          <i className="far fa-bookmark" />
         </Bookmark>
       )}
       <div>
-        <Detail>Host: {owner.username}</Detail>
-        <Detail>Scheduled for: {formatDate(scheduledFor)}</Detail>
-        <Detail>Category: {category}</Detail>
-        <Detail>Number of Questions (subject to change): {questions.length}</Detail>
+        <Detail>
+          {`Host: ${owner.username}`}
+        </Detail>
+        <Detail>
+          {`Scheduled for: ${formatDate(scheduledFor)}`}
+        </Detail>
+        <Detail>
+          {`Category: ${category}`}
+        </Detail>
+        <Detail>
+          {`Number of Questions (subject to change): ${questions.length}`}
+        </Detail>
       </div>
       {isCurrentUserAlsoOwner
       && (

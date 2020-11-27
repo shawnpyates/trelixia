@@ -2,6 +2,7 @@ import React, {
   useEffect, useRef, useState,
 } from 'react';
 import { useHistory } from 'react-router-dom';
+import PropTypes from 'prop-types';
 
 import {
   Grow,
@@ -28,7 +29,7 @@ import {
   StyledTitle,
 } from './styledComponents';
 
-const AUTH_URL = "http://localhost:4003/auth";
+const AUTH_URL = 'http://localhost:4003/auth';
 
 function NavBar({ currentUser, isUserLoading }) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -53,8 +54,6 @@ function NavBar({ currentUser, isUserLoading }) {
       setIsMenuOpen(false);
     }
   };
-
-  console.log('current user? ', currentUser);
 
   const wasPreviouslyOpen = useRef(isMenuOpen);
 
@@ -148,4 +147,14 @@ function NavBar({ currentUser, isUserLoading }) {
     </StyledAppBar>
   );
 }
+
+NavBar.defaultProps = {
+  currentUser: null,
+};
+
+NavBar.propTypes = {
+  currentUser: PropTypes.objectOf(PropTypes.any),
+  isUserLoading: PropTypes.bool.isRequired,
+};
+
 export default NavBar;

@@ -62,6 +62,7 @@ Slider.propTypes = {
   field: PropTypes.objectOf(PropTypes.any).isRequired,
   setFieldValue: PropTypes.func.isRequired,
   values: PropTypes.objectOf(PropTypes.any).isRequired,
+  defaultValue: PropTypes.string.isRequired,
 };
 
 export default Slider;

@@ -6,7 +6,14 @@ import PropTypes from 'prop-types';
 
 import { StyledField } from './styledComponents';
 
-function TextField({ field: { name, label, type, headerLabel } }) {
+function TextField({
+  field: {
+    name,
+    label,
+    type,
+    headerLabel,
+  },
+}) {
   return (
     <>
       {headerLabel

@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useMemo } from 'react';
 import { useQuery } from '@apollo/react-hooks';
 import { useLocation } from 'react-router-dom';
 
@@ -44,7 +44,7 @@ const buildQuery = (userId, urlQuery) => {
     };
   }
   return { type: GET_ALL_GAMES, dataKey: 'games', title: 'Upcoming Games' };
-}
+};
 
 function ListGames() {
   const { currentUser } = useContext(UserContext);
@@ -53,8 +53,8 @@ function ListGames() {
     arg: queryArg,
     dataKey,
     title,
-  } = buildQuery(currentUser && currentUser.id, useUrlQuery)
-  const {loading, error, data } = useQuery(queryType, { variables: queryArg });
+  } = useMemo(() => buildQuery(currentUser && currentUser.id, useUrlQuery), [currentUser]);
+  const { loading, error, data } = useQuery(queryType, { variables: queryArg });
 
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error :(</p>;

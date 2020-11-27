@@ -1,12 +1,18 @@
 {
   "parser": "babel-eslint",
-  "extends": "airbnb",
+  "plugins": ["react", "react-hooks"],
+  "extends": [
+    "airbnb",
+    "eslint:recommended",
+    "plugin:react/recommended"
+  ],
   "globals": {
     "document": true,
     "fetch": true,
     "window": true
   },
   "rules": {
-    "react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx"] }]
+    "react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx"] }],
+    "react-hooks/exhaustive-deps": "error"
   }
 }

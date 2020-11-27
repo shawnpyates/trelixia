@@ -58,7 +58,6 @@ function RenderFieldByType({
           submitForm={submitForm}
           isSubmitting={isSubmitting}
           buttonText={field.buttonText}
-          defaultValue={initialValues[field.name]}
           disabled={!dirty || !isValid}
         />
       );
@@ -66,6 +65,10 @@ function RenderFieldByType({
       return <div />;
   }
 }
+
+RenderFieldByType.defaultProps = {
+  isFromOptionPicker: false,
+};
 
 RenderFieldByType.propTypes = {
   field: PropTypes.objectOf(PropTypes.any).isRequired,
@@ -75,6 +78,10 @@ RenderFieldByType.propTypes = {
   isSubmitting: PropTypes.bool.isRequired,
   dirty: PropTypes.bool.isRequired,
   isValid: PropTypes.bool.isRequired,
+  isFromOptionPicker: PropTypes.bool,
+  errors: PropTypes.objectOf(PropTypes.any).isRequired,
+  touched: PropTypes.objectOf(PropTypes.any).isRequired,
+  initialValues: PropTypes.objectOf(PropTypes.any).isRequired,
 };
 
 export default RenderFieldByType;

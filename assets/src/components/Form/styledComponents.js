@@ -102,8 +102,8 @@ export const StyledField = styled(Field)`
 
 export const StyledButton = styled(Button)`
   margin-top: 35px;
-  ${({ pageEnd }) => pageEnd ? 'margin-bottom: 100px;' : ''}
-  ${({ disabled }) => disabled ? 'background-color: #CCC' : ''}
+  ${({ pageEnd }) => (pageEnd ? 'margin-bottom: 100px;' : '')}
+  ${({ disabled }) => (disabled ? 'background-color: #CCC' : '')}
 `;
 
 export const StyledInputLabel = styled(InputLabel)`

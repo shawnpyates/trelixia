@@ -10,10 +10,13 @@ import RenderFieldByType from './RenderFieldByType';
 const isInvalidIntValue = (n) => !(n > 0 && n <= 10000) || !Number.isInteger(n);
 
 const PickerContext = ({ handleChange, index }) => {
-  const { values: { pointValue, ...rest } } = useFormikContext();
+  const { values, dirty } = useFormikContext();
   useEffect(() => {
-    handleChange(isInvalidIntValue(Number(pointValue)) ? rest : values, index);
-  }, [values])
+    if (dirty) {
+      const { pointValue, ...rest } = values;
+      handleChange(isInvalidIntValue(Number(pointValue)) ? rest : values, index);
+    }
+  }, [handleChange, index, values, dirty]);
   return null;
 };
 
@@ -59,6 +62,9 @@ function OptionsPicker({
 OptionsPicker.propTypes = {
   fields: PropTypes.arrayOf(PropTypes.any).isRequired,
   initialValues: PropTypes.objectOf(PropTypes.any).isRequired,
+  currentValues: PropTypes.objectOf(PropTypes.any).isRequired,
+  handleChange: PropTypes.func.isRequired,
+  index: PropTypes.number.isRequired,
 };
 
 export default OptionsPicker;
