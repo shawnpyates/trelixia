@@ -1,5 +1,5 @@
 import React from 'react';
-import { Field } from 'formik';
+import { Field, useFormikContext } from 'formik';
 import {
   FormControlLabel, Radio, Typography, Tooltip,
 } from '@material-ui/core';
@@ -27,9 +27,9 @@ function RadioGroup({
     label,
     options,
   },
-  isSubmitting,
   isFromOptionPicker,
 }) {
+  const { isSubmitting } = useFormikContext();
   const getTooltipHtml = (title) => (
     <TooltipText>{title}</TooltipText>
   );
@@ -67,7 +67,6 @@ RadioGroup.defaultProps = {
 
 RadioGroup.propTypes = {
   field: PropTypes.objectOf(PropTypes.any).isRequired,
-  isSubmitting: PropTypes.bool.isRequired,
   isFromOptionPicker: PropTypes.bool,
 };
 

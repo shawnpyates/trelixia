@@ -1,226 +1,107 @@
-import React, { Fragment, useState } from 'react';
+import React, {
+  Fragment, useEffect, useRef, useState,
+} from 'react';
 import PropTypes from 'prop-types';
-import {
-  Popover,
-  TableBody,
-  TableHead,
-  TableRow,
-  Tooltip,
-} from '@material-ui/core';
+import shortid from 'shortid';
+import { TableBody, TableHead } from '@material-ui/core';
+import { useParams } from 'react-router-dom';
+import { useQuery } from '@apollo/react-hooks';
 
-import TooltipTitle from './TooltipTitle';
-import QuestionRows from './QuestionRows';
-import OptionsPicker from '../Form/OptionsPicker';
+import TableRow from './TableRow';
+import EditableRow from './EditableRow';
 import {
   ListTable,
-  ListButton,
-  SideContent,
-  StyledTextarea,
   HeadTableCell,
-  ContentTableCell,
 } from './styledComponents';
+import { questionSetModes, questionTableHeaders as headers } from '../../content';
+import { GET_GAME } from '../../api';
 
-import {
-  questionSetModes,
-  questionTypes,
-  questionOptionsForm as questionOptionsFormContent,
-} from '../../content';
+const usePrevious = (value) => {
+  const ref = useRef();
+  useEffect(() => {
+    ref.current = value;
+  });
+  return ref.current;
+};
 
-function QuestionTable({
-  isLoading,
-  currentMode,
-  temporaryRows,
-  game,
-  handleRowUpdate,
-  addNewRow,
-  handleQuestionSubmit,
-  deleteQuestion,
-}) {
-  const [popoverEl, setPopoverEl] = useState(null);
+const getInitialNewRow = ({
+  defaultCompareThreshold,
+  defaultQuestionType,
+  defaultTimeAllotment,
+}) => ({
+  questionText: null,
+  answer: null,
+  timeAllotment: defaultTimeAllotment,
+  compareThreshold: defaultCompareThreshold,
+  type: defaultQuestionType,
+  pointValue: 1,
+  shortid: shortid.generate(),
+});
 
-  const handleOptionsOpen = ({ currentTarget: { id } }) => {
-    setPopoverEl(id);
+function QuestionTable({ currentMode }) {
+  const [editableRows, setEditableRows] = useState(null);
+  const previousMode = usePrevious(currentMode);
+  const { id } = useParams();
+
+  const { data, loading } = useQuery(GET_GAME, { variables: { id } });
+
+  useEffect(() => {
+    if (currentMode === previousMode) {
+      return;
+    }
+    if (currentMode === questionSetModes.ADD) {
+      setEditableRows([getInitialNewRow(data?.game)]);
+      return;
+    }
+    if (currentMode === questionSetModes.EDIT) {
+      setEditableRows(data?.game.questions);
+      return;
+    }
+    if ([questionSetModes.ADD, questionSetModes.EDIT].includes(previousMode)) {
+      setEditableRows(null);
+    }
+  }, [currentMode, data, previousMode]);
+
+  const addNewRow = () => {
+    setEditableRows([...editableRows, getInitialNewRow(data?.game)]);
   };
 
-  const handleOptionsClose = () => {
-    setPopoverEl(null);
+  const removeEditableRowCallback = (index) => {
+    setEditableRows(
+      editableRows.length > 1
+        ? [...editableRows.slice(0, index), ...editableRows.slice(index + 1)]
+        : [getInitialNewRow(data?.game)],
+    );
   };
-
-  console.log('x: ', JSON.stringify({
-    isLoading,
-    currentMode,
-    temporaryRows,
-    game,
-    handleRowUpdate,
-    addNewRow,
-    handleQuestionSubmit,
-    deleteQuestion,
-    popoverEl,
-  }));
 
   return (
-    <ListTable isloading={String(isLoading || '')}>
+    <ListTable isloading={String(loading || '')}>
       <TableHead>
         <tr>
-          <HeadTableCell>Question</HeadTableCell>
-          <HeadTableCell>Answer</HeadTableCell>
-          <HeadTableCell>Topic (Optional)</HeadTableCell>
+          {headers.map((header) => <HeadTableCell key={header}>{header}</HeadTableCell>)}
         </tr>
       </TableHead>
       <TableBody>
-        {([questionSetModes.ADD, questionSetModes.EDIT].includes(currentMode) && temporaryRows)
-      && temporaryRows.map(({
-        questionText,
-        answer,
-        topic,
-        compareThreshold,
-        timeAllotment,
-        type,
-        pointValue,
-        shortid: key,
-        id,
-      }, i) => {
-        const refId = id || key;
-        const isActiveRow = refId === popoverEl;
-        const isLast = i === temporaryRows.length - 1;
-        const {
-          buttonText,
-          shouldDisplayNewRowButton,
-          shouldRemoveTempRowOnSubmit,
-        } = (
-          currentMode === questionSetModes.ADD
-            ? {
-              buttonText: 'Add',
-              shouldRemoveTempRowOnSubmit: true,
-              shouldDisplayNewRowButton: isLast,
-            } : {
-              buttonText: 'Edit',
-            }
-        );
-        const optionsFormInitialValues = (
-          game.questions.find((question) => question.id === id)
-          || { ...game, pointValue: 1 }
-        );
-        return (
-          <Fragment key={refId}>
-            <TableRow>
-              <ContentTableCell columnlength={3} islast={String(isLast || '')}>
-                <StyledTextarea
-                  name="questionText"
-                  value={questionText || ''}
-                  onChange={({ target: { name, value } }) => {
-                    handleRowUpdate({ [name]: value }, i);
-                  }}
-                  rowsMin={3}
-                />
-              </ContentTableCell>
-              <ContentTableCell columnlength={3} islast={String(isLast || '')}>
-                <StyledTextarea
-                  name="answer"
-                  value={answer || ''}
-                  onChange={({ target: { name, value } }) => {
-                    handleRowUpdate({ [name]: value }, i);
-                  }}
-                  rowsMin={3}
-                />
-              </ContentTableCell>
-              <ContentTableCell columnlength={3} islast={String(isLast || '')}>
-                <StyledTextarea
-                  name="topic"
-                  value={topic || ''}
-                  onChange={({ target: { name, value } }) => {
-                    handleRowUpdate({ [name]: value }, i);
-                  }}
-                  rowsMin={3}
-                />
-              </ContentTableCell>
-              <SideContent>
-                <Tooltip
-                  title={(
-                    <TooltipTitle
-                      compareThreshold={compareThreshold}
-                      timeAllotment={timeAllotment}
-                      type={type}
-                      pointValue={pointValue}
-                      game={game}
-                      questionTypes={questionTypes}
-                    />
-                  )}
-                >
-                  <ListButton
-                    aria-describedby={popoverEl && 'options-popover'}
-                    value={refId}
-                    id={refId}
-                    onClick={handleOptionsOpen}
-                  >
-                    Other Options
-                  </ListButton>
-                </Tooltip>
-                <Popover
-                  id={refId}
-                  open={Boolean(popoverEl) && isActiveRow}
-                  anchorEl={popoverEl}
-                  onClose={handleOptionsClose}
-                  value={refId}
-                  anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
-                  transformOrigin={{ vertical: 'top', horizontal: 'right' }}
-                >
-                  <OptionsPicker
-                    fields={questionOptionsFormContent.fields}
-                    initialValues={optionsFormInitialValues}
-                    currentValues={temporaryRows[i]}
-                    handleChange={handleRowUpdate}
-                    index={i}
-                    row={temporaryRows[i]}
-                  />
-                </Popover>
-              </SideContent>
-              <SideContent>
-                <ListButton
-                  createnewitem="true"
-                  disabled={!questionText || !answer}
-                  onClick={() => {
-                    handleQuestionSubmit({
-                      index: i,
-                      shouldRemoveTempRow: shouldRemoveTempRowOnSubmit,
-                      variables: {
-                        id,
-                        questionText,
-                        answer,
-                        timeAllotment,
-                        compareThreshold,
-                        type,
-                        topic,
-                        gameId: game.id,
-                        pointValue: Number(pointValue),
-                      },
-                    });
-                  }}
-                >
-                  {buttonText}
-                </ListButton>
-              </SideContent>
-            </TableRow>
-            {shouldDisplayNewRowButton
-            && (
-              <TableRow key="addnew">
-                <ContentTableCell columnlength={3} fornewrowbutton="true">
-                  <ListButton addnewrow="true" onClick={addNewRow}>+ New Row</ListButton>
-                </ContentTableCell>
-                <ContentTableCell columnlength={3} />
-                <ContentTableCell columnlength={3} />
-              </TableRow>
-            )}
-          </Fragment>
-        );
-      })}
-        {game.questions
+        {([questionSetModes.ADD, questionSetModes.EDIT].includes(currentMode) && editableRows)
+        && editableRows.map((row, index) => {
+          const refId = row.id || row.shortid;
+          const isLast = index === editableRows.length - 1;
+          return (
+            <Fragment key={refId}>
+              <EditableRow
+                currentMode={currentMode}
+                removeEditableRowCallback={removeEditableRowCallback}
+                row={row}
+                isLast={isLast}
+                index={index}
+                addNewRow={addNewRow}
+              />
+            </Fragment>
+          );
+        })}
+        {data?.game.questions
         && (
-          <QuestionRows
-            questions={game.questions}
-            deleteQuestion={deleteQuestion}
-            currentMode={currentMode}
-          />
+          <TableRow questions={data?.game.questions} currentMode={currentMode} />
         )}
       </TableBody>
     </ListTable>
@@ -228,14 +109,7 @@ function QuestionTable({
 }
 
 QuestionTable.propTypes = {
-  isLoading: PropTypes.bool.isRequired,
   currentMode: PropTypes.string.isRequired,
-  temporaryRows: PropTypes.arrayOf(PropTypes.any).isRequired,
-  game: PropTypes.objectOf(PropTypes.any).isRequired,
-  handleRowUpdate: PropTypes.func.isRequired,
-  addNewRow: PropTypes.func.isRequired,
-  handleQuestionSubmit: PropTypes.func.isRequired,
-  deleteQuestion: PropTypes.func.isRequired,
 };
 
 export default QuestionTable;

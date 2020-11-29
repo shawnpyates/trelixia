@@ -1,5 +1,5 @@
 import React from 'react';
-import { Field } from 'formik';
+import { Field, useFormikContext } from 'formik';
 import { FormControlLabel, Slider as MuiSlider, Typography } from '@material-ui/core';
 import { Switch } from 'formik-material-ui';
 import PropTypes from 'prop-types';
@@ -11,20 +11,18 @@ const displayCurrentValue = (value, decimalPlaces) => (
 function Slider({
   field: {
     toggle,
+    name,
     slider: {
       id,
       label,
-      name,
       decimalPlaces,
       step,
       min,
       max,
     },
   },
-  setFieldValue,
-  values,
-  defaultValue,
 }) {
+  const { setFieldValue, values } = useFormikContext();
   return (
     <>
       {toggle
@@ -43,13 +41,12 @@ function Slider({
           <MuiSlider
             name={name}
             step={step}
-            defaultValue={defaultValue}
             value={values[name]}
             aria-labelledby={id}
             min={min}
             max={max}
-            onChange={(_event, value) => {
-              setFieldValue(name, value);
+            onChange={(_event, val) => {
+              setFieldValue(name, val);
             }}
           />
         </>
@@ -60,9 +57,6 @@ function Slider({
 
 Slider.propTypes = {
   field: PropTypes.objectOf(PropTypes.any).isRequired,
-  setFieldValue: PropTypes.func.isRequired,
-  values: PropTypes.objectOf(PropTypes.any).isRequired,
-  defaultValue: PropTypes.string.isRequired,
 };
 
 export default Slider;

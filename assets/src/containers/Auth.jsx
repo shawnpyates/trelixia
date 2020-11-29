@@ -2,23 +2,17 @@ import React, { useContext, useEffect } from 'react';
 import { useMutation } from '@apollo/react-hooks';
 import { useHistory, useLocation } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
-import { Composition } from 'atomic-layout';
-import styled from 'styled-components';
 
 import { CREATE_USER, LOGIN_USER } from '../api/mutations';
 import { createUserForm, loginForm } from '../content';
 import Form from '../components/Form/Form';
 import { UserContext } from '../context/userContext';
 import { createUserSchema, loginSchema } from '../validationSchemas';
+import { StyledComposition } from './styledComponents';
 
 const useUrlQuery = () => new URLSearchParams(useLocation().search);
 
 const toastOptions = { autoClose: 2000, hideProgressBar: true };
-
-const StyledComposition = styled(Composition)`
-  position: absolute;
-  top: 15%;
-`;
 
 const areasMd = `
   phantom register login

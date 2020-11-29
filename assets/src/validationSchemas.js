@@ -1,4 +1,6 @@
-import { string, object, ref } from 'yup';
+import {
+  string, number, object, ref,
+} from 'yup';
 
 export const createUserSchema = object().shape({
   username: string()
@@ -22,7 +24,7 @@ export const loginSchema = object().shape({
 
 export const createGameSchema = object().shape({
   name: string()
-    .required('Name is required.'),
+  .required('Name is required.'),
   category: string()
     .required('Category is required.'),
 });
@@ -30,4 +32,16 @@ export const createGameSchema = object().shape({
 export const createUsernameSchema = object().shape({
   username: string()
     .required('Username is required.'),
+});
+
+export const questionSchema = object().shape({
+  questionText: string()
+    .required('Question is required.'),
+  answer: string()
+    .required('Answer is required.'),
+  topic: string(),
+  compareThreshold: number(),
+  timeAllotment: number(),
+  type: string(),
+  pointValue: number().min(1).max(10000),
 });

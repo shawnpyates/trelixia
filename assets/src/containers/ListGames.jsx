@@ -7,7 +7,7 @@ import {
   GET_GAMES_BY_CATEGORY,
   GET_GAMES_BY_USER_FAVORITE,
   GET_GAMES_BY_HOST,
-} from '../api/queries';
+} from '../api';
 import { gameListTableContent } from '../content';
 import List from '../components/List/List';
 import { capitalize } from '../utils';

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Formik, Form as FormikForm } from 'formik';
+import { Formik } from 'formik';
 import { ThemeProvider } from '@material-ui/styles';
 import { MuiPickersUtilsProvider } from '@material-ui/pickers';
 import DateFnsUtils from '@date-io/date-fns';
@@ -25,35 +25,13 @@ function Form({
             validationSchema={validationSchema}
             onSubmit={handleSubmit}
           >
-            {({
-              submitForm,
-              isSubmitting,
-              setFieldValue,
-              values,
-              errors,
-              touched,
-              dirty,
-              isValid,
-            }) => (
-              <FormikForm>
-                {fields.map((field) => (
-                  <FieldContainer key={field.name}>
-                    <RenderFieldByType
-                      errors={errors}
-                      touched={touched}
-                      field={field}
-                      values={values}
-                      setFieldValue={setFieldValue}
-                      submitForm={submitForm}
-                      isSubmitting={isSubmitting}
-                      initialValues={initialValues}
-                      dirty={dirty}
-                      isValid={isValid}
-                    />
-                  </FieldContainer>
-                ))}
-              </FormikForm>
-            )}
+            <>
+              {fields.map((field) => (
+                <FieldContainer key={field.name}>
+                  <RenderFieldByType field={field} />
+                </FieldContainer>
+              ))}
+            </>
           </Formik>
         </MuiPickersUtilsProvider>
       </ThemeProvider>

@@ -1,15 +1,18 @@
 import React from 'react';
-import { Field } from 'formik';
+import { Field, useFormikContext } from 'formik';
 import { FormControlLabel } from '@material-ui/core';
 import { DateTimePicker as MuiDateTimePicker } from '@material-ui/pickers';
 import { Switch } from 'formik-material-ui';
 import PropTypes from 'prop-types';
 
 function DateTimePicker({
-  field: { toggle, picker: pickerConfig },
-  setFieldValue,
-  values,
+  field: {
+    toggle,
+    picker: pickerConfig,
+    name,
+  },
 }) {
+  const { setFieldValue, values } = useFormikContext();
   return (
     <>
       {toggle
@@ -25,9 +28,9 @@ function DateTimePicker({
           <MuiDateTimePicker
             label={pickerConfig.label}
             disablePast
-            value={values[pickerConfig.name]}
+            value={values[name]}
             onChange={(ev) => {
-              setFieldValue(pickerConfig.name, ev);
+              setFieldValue(name, ev);
             }}
           />
         </>
@@ -38,8 +41,6 @@ function DateTimePicker({
 
 DateTimePicker.propTypes = {
   field: PropTypes.objectOf(PropTypes.any).isRequired,
-  setFieldValue: PropTypes.func.isRequired,
-  values: PropTypes.objectOf(PropTypes.any).isRequired,
 };
 
 export default DateTimePicker;

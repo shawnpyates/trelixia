@@ -1,20 +1,21 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-
+import { useFormikContext } from 'formik';
 import { StyledButton } from './styledComponents';
 
-function SubmitButton({
-  submitForm,
-  isSubmitting,
-  buttonText,
-  disabled,
-}) {
+function SubmitButton({ buttonText }) {
+  const {
+    isSubmitting,
+    dirty,
+    isValid,
+    handleSubmit,
+  } = useFormikContext();
   return (
     <StyledButton
       variant="contained"
       color="primary"
-      onClick={submitForm}
-      disabled={isSubmitting || disabled}
+      onClick={handleSubmit}
+      disabled={isSubmitting || !dirty || !isValid}
       pageEnd="true"
     >
       {buttonText}
@@ -23,10 +24,7 @@ function SubmitButton({
 }
 
 SubmitButton.propTypes = {
-  submitForm: PropTypes.func.isRequired,
-  isSubmitting: PropTypes.bool.isRequired,
   buttonText: PropTypes.string.isRequired,
-  disabled: PropTypes.bool.isRequired,
 };
 
 export default SubmitButton;

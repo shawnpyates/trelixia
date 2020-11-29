@@ -8,59 +8,21 @@ import DateTimePicker from './DateTimePicker';
 import SubmitButton from './SubmitButton';
 import RadioGroup from './RadioGroup';
 
-function RenderFieldByType({
-  field,
-  values,
-  setFieldValue,
-  submitForm,
-  isSubmitting,
-  errors,
-  touched,
-  isFromOptionPicker,
-  initialValues,
-  dirty,
-  isValid,
-}) {
+function RenderFieldByType({ field, isFromOptionPicker }) {
   switch (field.type) {
     case 'text':
     case 'password':
       return <TextField field={field} />;
     case 'select':
-      return <Select field={field} errors={errors} touched={touched} />;
+      return <Select field={field} />;
     case 'slider':
-      return (
-        <Slider
-          field={field}
-          setFieldValue={setFieldValue}
-          values={values}
-          defaultValue={initialValues[field.slider.name]}
-        />
-      );
+      return <Slider field={field} />;
     case 'dateTimePicker':
-      return (
-        <DateTimePicker
-          field={field}
-          setFieldValue={setFieldValue}
-          values={values}
-        />
-      );
+      return <DateTimePicker field={field} />;
     case 'radioGroup':
-      return (
-        <RadioGroup
-          field={field}
-          isSubmitting={isSubmitting}
-          isFromOptionPicker={isFromOptionPicker}
-        />
-      );
+      return <RadioGroup field={field} isFromOptionPicker={isFromOptionPicker} />;
     case 'submitButton':
-      return (
-        <SubmitButton
-          submitForm={submitForm}
-          isSubmitting={isSubmitting}
-          buttonText={field.buttonText}
-          disabled={!dirty || !isValid}
-        />
-      );
+      return <SubmitButton buttonText={field.buttonText} />;
     default:
       return <div />;
   }
@@ -72,16 +34,7 @@ RenderFieldByType.defaultProps = {
 
 RenderFieldByType.propTypes = {
   field: PropTypes.objectOf(PropTypes.any).isRequired,
-  values: PropTypes.objectOf(PropTypes.any).isRequired,
-  setFieldValue: PropTypes.func.isRequired,
-  submitForm: PropTypes.func.isRequired,
-  isSubmitting: PropTypes.bool.isRequired,
-  dirty: PropTypes.bool.isRequired,
-  isValid: PropTypes.bool.isRequired,
   isFromOptionPicker: PropTypes.bool,
-  errors: PropTypes.objectOf(PropTypes.any).isRequired,
-  touched: PropTypes.objectOf(PropTypes.any).isRequired,
-  initialValues: PropTypes.objectOf(PropTypes.any).isRequired,
 };
 
 export default RenderFieldByType;

@@ -1,20 +1,14 @@
 import React, { useContext } from 'react';
 import { useMutation } from '@apollo/react-hooks';
 import { useHistory } from 'react-router-dom';
-import { Composition } from 'atomic-layout';
-import styled from 'styled-components';
 
-import { CREATE_GAME } from '../api/mutations';
+import { CREATE_GAME } from '../api';
 import { createGameForm } from '../content';
 import { createGameSchema } from '../validationSchemas';
 import { UserContext } from '../context/userContext';
+import { StyledComposition } from './styledComponents';
 
 import Form from '../components/Form/Form';
-
-const StyledComposition = styled(Composition)`
-  position: absolute;
-  top: 15%;
-`;
 
 const areasMd = `
   phantom formBlock

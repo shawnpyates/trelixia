@@ -1,28 +1,26 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
-
 
 import QuestionTable from './QuestionTable';
 import QuestionModeButton from './QuestionModeButton';
-
 import {
   ListContainer,
   EmptyDataIndicator,
 } from './styledComponents';
-
 import { questionSetModes } from '../../content';
 
-function QuestionList({
-  currentMode,
-  setCurrentMode,
-  temporaryRows,
-  handleRowUpdate,
-  addNewRow,
-  handleQuestionSubmit,
-  deleteQuestion,
-  game,
-  isLoading,
-}) {
+function QuestionList({ game }) {
+  const [currentMode, setCurrentMode] = useState(questionSetModes.VIEW);
+
+  useEffect(() => {
+    if (
+      !game?.questions?.length
+      && currentMode === questionSetModes.VIEW
+    ) {
+      setCurrentMode(questionSetModes.ADD);
+    }
+  }, [currentMode, game, setCurrentMode]);
+
   return (
     <ListContainer>
       <h3>
@@ -39,16 +37,7 @@ function QuestionList({
           </>
         )) || ''}
       </div>
-      <QuestionTable
-        isLoading={isLoading}
-        currentMode={currentMode}
-        temporaryRows={temporaryRows}
-        game={game}
-        handleRowUpdate={handleRowUpdate}
-        addNewRow={addNewRow}
-        handleQuestionSubmit={handleQuestionSubmit}
-        deleteQuestion={deleteQuestion}
-      />
+      <QuestionTable currentMode={currentMode} />
       {(game.questions && !game.questions.length
       && (
         <EmptyDataIndicator>
@@ -60,20 +49,11 @@ function QuestionList({
 }
 
 QuestionList.defaultProps = {
-  temporaryRows: null,
   game: null,
 };
 
 QuestionList.propTypes = {
-  currentMode: PropTypes.string.isRequired,
-  temporaryRows: PropTypes.arrayOf(PropTypes.object),
-  addNewRow: PropTypes.func.isRequired,
   game: PropTypes.objectOf(PropTypes.any),
-  isLoading: PropTypes.bool.isRequired,
-  setCurrentMode: PropTypes.func.isRequired,
-  handleRowUpdate: PropTypes.func.isRequired,
-  handleQuestionSubmit: PropTypes.func.isRequired,
-  deleteQuestion: PropTypes.func.isRequired,
 };
 
 export default QuestionList;

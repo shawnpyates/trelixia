@@ -145,9 +145,9 @@ export const createGameForm = {
     },
     {
       type: 'slider',
+      name: 'defaultTimeAllotment',
       slider: {
         id: 'default-time-allotment-slider',
-        name: 'defaultTimeAllotment',
         label: 'Default Time Allowed for Each Question (in seconds)',
         step: 1,
         min: 5,
@@ -174,13 +174,13 @@ export const createGameForm = {
     },
     {
       type: 'slider',
+      name: 'defaultCompareThreshold',
       toggle: {
         name: 'isAutomated',
         label: 'Run the game in Automated Mode',
       },
       slider: {
         id: 'required-score-slider',
-        name: 'defaultCompareThreshold',
         label: 'Default Required Match Score',
         step: 0.01,
         min: 0.50,
@@ -191,13 +191,13 @@ export const createGameForm = {
     },
     {
       type: 'slider',
+      name: 'maxPlayers',
       toggle: {
         name: 'shouldSetMaxPlayers',
         label: 'Set a maximum number of players allowed to participate',
       },
       slider: {
         id: 'max-players-slider',
-        name: 'maxPlayers',
         label: 'Maximum Number of Players',
         step: 1,
         min: 1,
@@ -207,12 +207,12 @@ export const createGameForm = {
     },
     {
       type: 'dateTimePicker',
+      name: 'scheduledFor',
       toggle: {
         name: 'shouldScheduleTime',
         label: 'Schedule a time for your game to start',
       },
       picker: {
-        name: 'scheduledFor',
         label: 'Set Time',
       },
     },
@@ -231,7 +231,6 @@ export const questionOptionsForm = {
       name: 'compareThreshold',
       slider: {
         id: 'required-score-slider',
-        name: 'compareThreshold',
         label: 'Required Match Score',
         step: 0.01,
         min: 0.50,
@@ -244,7 +243,6 @@ export const questionOptionsForm = {
       name: 'timeAllotment',
       slider: {
         id: 'time-allotment-slider',
-        name: 'timeAllotment',
         label: 'Time Allowed for the Question (in seconds)',
         step: 1,
         min: 5,
@@ -294,6 +292,15 @@ export const gameListTableContent = [
   },
 ];
 
+export const questionTableHeaders = ['Question', 'Answer', 'Topic (Optional)'];
+
+export const questionTooltipLabels = {
+  compareThreshold: 'Required match score: ',
+  timeAllotment: 'Time Allowed (s): ',
+  type: 'Type: ',
+  pointValue: 'Point Value: ',
+};
+
 export const questionSetModes = {
   VIEW: 'view',
   ADD: 'add',
@@ -309,4 +316,12 @@ export const questionTypes = {
     value: 'TIMED',
     label: 'Timed',
   },
+};
+
+export const toastMessages = {
+  createQuestion: 'Successfully created question.',
+  editQuestion: 'Successfully edited question.',
+  deleteQuestion: 'Successfully deleted question.',
+  createFavorite: 'Successfully created favorite.',
+  deleteFavorite: 'Successfully created favorite.',
 };

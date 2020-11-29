@@ -1,4 +1,5 @@
 import React from 'react';
+import { useFormikContext } from 'formik';
 import { Select as FormikSelect } from 'formik-material-ui';
 import { FormControl, MenuItem, FormHelperText } from '@material-ui/core';
 import PropTypes from 'prop-types';
@@ -6,7 +7,8 @@ import PropTypes from 'prop-types';
 import { StyledField, StyledInputLabel } from './styledComponents';
 import { capitalize } from '../../utils';
 
-function Select({ field: { name, label, options }, errors, touched }) {
+function Select({ field: { name, label, options } }) {
+  const { errors, touched } = useFormikContext();
   return (
     <FormControl>
       <StyledInputLabel htmlFor={name}>
@@ -32,15 +34,9 @@ function Select({ field: { name, label, options }, errors, touched }) {
   );
 }
 
-Select.defaultProps = {
-  errors: null,
-  touched: false,
-};
 
 Select.propTypes = {
   field: PropTypes.objectOf(PropTypes.any).isRequired,
-  errors: PropTypes.arrayOf(PropTypes.any),
-  touched: PropTypes.bool,
 };
 
 export default Select;

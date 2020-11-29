@@ -12,7 +12,7 @@ import 'react-toastify/dist/ReactToastify.css';
 
 import './App.css';
 
-import { GET_CURRENT_USER } from './api/queries';
+import { GET_CURRENT_USER } from './api';
 import { UserProvider } from './context/userContext';
 
 import DrawerComponent from './components/Drawer/Drawer';

@@ -21,6 +21,7 @@ import {
 } from './styledComponents';
 import { formatDate } from '../../utils';
 
+// todo - refactor this mess
 function List({
   title,
   type,
