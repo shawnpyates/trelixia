@@ -63,15 +63,14 @@ function QuestionTable({ currentMode }) {
   }, [currentMode, data, previousMode]);
 
   const addNewRow = () => {
-    setEditableRows([...editableRows, getInitialNewRow(data?.game)]);
+    setEditableRows((prev) => [...prev, getInitialNewRow(data?.game)]);
   };
 
   const removeEditableRowCallback = (index) => {
-    setEditableRows(
-      editableRows.length > 1
-        ? [...editableRows.slice(0, index), ...editableRows.slice(index + 1)]
-        : [getInitialNewRow(data?.game)],
-    );
+    setEditableRows((prev) => (
+      prev.length > 1
+        ? prev.filter((_, i) => i !== index)
+        : [getInitialNewRow(data?.game)]));
   };
 
   return (
