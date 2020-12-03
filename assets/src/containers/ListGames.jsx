@@ -16,9 +16,9 @@ import { UserContext } from '../context/userContext';
 const useUrlQuery = () => new URLSearchParams(useLocation().search);
 
 const buildQuery = (userId, urlQuery) => {
-  const category = urlQuery().get('category');
-  const bookmarked = urlQuery().get('bookmarked');
-  const hosting = urlQuery().get('hosting');
+  const category = urlQuery.get('category');
+  const bookmarked = urlQuery.get('bookmarked');
+  const hosting = urlQuery.get('hosting');
   if (category) {
     return {
       type: GET_GAMES_BY_CATEGORY,
@@ -48,12 +48,13 @@ const buildQuery = (userId, urlQuery) => {
 
 function ListGames() {
   const { currentUser } = useContext(UserContext);
+  const urlQuery = useUrlQuery();
   const {
     type: queryType,
     arg: queryArg,
     dataKey,
     title,
-  } = useMemo(() => buildQuery(currentUser && currentUser.id, useUrlQuery), [currentUser]);
+  } = useMemo(() => buildQuery(currentUser && currentUser.id, urlQuery), [currentUser, urlQuery]);
   const { loading, error, data } = useQuery(queryType, { variables: queryArg });
 
   if (loading) return <p>Loading...</p>;
